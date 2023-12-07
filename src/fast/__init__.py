@@ -3,4 +3,5 @@
 """
 
 from .faker import Faker
+from .path import Path
 from .rand import Rand

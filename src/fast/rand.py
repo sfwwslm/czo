@@ -8,7 +8,7 @@ import uuid
 
 class Rand:
     """
-    随机生成一些东西
+    随机生成数据的功能
     """
 
     @staticmethod
@@ -35,7 +35,8 @@ class Rand:
             ```
         """
 
-        rand_str: list[str] = random.sample(string.ascii_letters + string.digits, 20)
+        rand_str: list[str] = random.sample(
+            string.ascii_letters + string.digits, 20)
         random_value: str = ''.join(rand_str) + '\n' + str(uuid.uuid4())
 
         temp_name = '.temp123qwe231'

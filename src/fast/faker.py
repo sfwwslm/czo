@@ -53,7 +53,7 @@ class Faker:
     @property
     def info(self) -> dict:
         """生成随机数据，用于测试目的。
-        
+
         `info` 是一个属性，用于生成用于测试目的的随机数据。
 
         返回值:
@@ -72,7 +72,7 @@ class Faker:
         birth_date = datetime.datetime.strptime(birth_dy, "%Y%m%d")
         current_date = datetime.datetime.now()
         age = current_date.year - birth_date.year - (
-                (current_date.month, current_date.day) < (birth_date.month, birth_date.day))
+            (current_date.month, current_date.day) < (birth_date.month, birth_date.day))
 
         return {
             'name': self.name, 'gender': gender, 'age': age, 'occupation': self.occupation,
