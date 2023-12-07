@@ -9,6 +9,7 @@ setup(
     author_email='sfwwslm@gmail.com',
     url='https://github.com/sfwwslm/tools.git',
     packages=['faker'],
+    package_data={'faker': ['config/area.py']},
     install_requires=[],
     keywords='test faker',
     long_description="....",
