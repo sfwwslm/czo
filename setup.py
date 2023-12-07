@@ -1,15 +1,14 @@
 from distutils.core import setup
 
-
 setup(
-    name='test-tools',
-    version='0.2',
+    name='fast',
+    version='0.1',
     description='辅助测试的工具包',
     author='sfwwslm',
     author_email='sfwwslm@gmail.com',
     url='https://github.com/sfwwslm/tools.git',
-    packages=['faker', 'rand'],
-    package_data={'faker': ['config/area.py']},
+    packages=['fast'],
+    package_dir={"": "src"},
     install_requires=[],
     keywords='test faker',
     long_description="....",

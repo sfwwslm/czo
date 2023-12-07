@@ -9,7 +9,7 @@ class Faker:
     @property
     def __areaCodeDict(self) -> dict:
         """区域文件地址"""
-        from .config.area import dataDict
+        from ._internal_utils import dataDict
         return dataDict
 
     def __areaCode(self, dict) -> int:
