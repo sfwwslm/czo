@@ -3,5 +3,5 @@
 """
 
 from .faker import Faker
-from .path import Path
-from .rand import Rand
+from .path import clear_directory
+from .rand import random_file, random_str
