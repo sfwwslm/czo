@@ -223,3 +223,25 @@ class FastDate:
         parsed_date = parsed_date + datetime.timedelta(hours=8)
         # 格式化为想要的时间格式
         return parsed_date.strftime("%Y-%m-%d %H:%M:%S")
+    
+    @staticmethod
+    def now_statr_end(timestamp:bool=False) -> tuple:
+        """
+        返回当前日期的开始和结束时间。
+
+        Args:
+            timestamp (bool, 可选): 如果为True，则返回开始和结束时间的时间戳。默认为False。
+
+        Returns:
+            tuple: 包含当前日期的开始时间（00:00:00）和结束时间（23:59:59）的元组。如果timestamp为True，则返回开始和结束时间的时间戳。
+        """
+        # 获取当前日期时间
+        now = datetime.datetime.now()
+        # 获取当天开始时间（即 00:00:00）
+        start_of_day = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
+        # 获取当天结束时间（即 23:59:59）
+        end_of_day = datetime.datetime(
+            now.year, now.month, now.day, 23, 59, 59)
+        if timestamp:
+            return int(start_of_day.timestamp()), int(end_of_day.timestamp())
+        return str(start_of_day), str(end_of_day)
