@@ -1,8 +1,8 @@
 """
-辅助测试的一些功能
+辅助测试的一些常用功能
 """
 
-from .faker import Faker
-from .path import clear_directory
-from .rand import random_file, random_str
 from .date import FastDate
+from .faker import Faker
+from .path import Path
+from .rand import Random
