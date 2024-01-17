@@ -9,7 +9,7 @@ class Faker:
     @property
     def __areaCodeDict(self) -> dict:
         """区域文件地址"""
-        from ._internal_utils import dataDict
+        from .data._internal_utils import dataDict
         return dataDict
 
     def __areaCode(self, dict) -> int:
@@ -52,7 +52,7 @@ class Faker:
 
     @property
     def info(self) -> dict:
-        """生成随机数据，用于测试目的。
+        """随机数据，用于测试目的。
 
         `info` 是一个属性，用于生成用于测试目的的随机数据。
 
@@ -75,13 +75,29 @@ class Faker:
             (current_date.month, current_date.day) < (birth_date.month, birth_date.day))
 
         return {
-            'name': self.name, 'gender': gender, 'age': age, 'occupation': self.occupation,
-            'ethnicities': self.ethnicities, 'school': self.school, 'religion': self.religion,
-            'phone_number': self.phone_number, 'home_phone_number': self.home_phone_number,
-            'address': area_cd_name, 'id_card': id_card, 'MAC': self.mac_address,
-            'passport_number': self.passport_number, 'latitude': self.latitude, 'longitude': self.longitude,
-            'ipv4': self.ipv4, 'msg': self.warning
+            '姓名': self.name, '性别': gender, '年龄': age, '职业': self.occupation,
+            '民族': self.ethnicities, '学校': self.school, '宗教信仰': self.religion,
+            '手机号': self.phone_number, '座机号': self.home_phone_number,
+            '地址': f"{area_cd_name}{self.housing}", '小区': self.housing, '身份证号': id_card, 'MAC': self.mac_address,
+            '护照号': self.passport_number, '纬度': self.latitude, '经度': self.longitude,
+            'IP地址': self.ipv4, '国家': self.country(), '婚姻状态': self.marital_status,
+            '证件类型': self.certificate_type, '学历': self.edu
         }
+
+    @property
+    def edu(self):
+        """学历"""
+        return random.choice(["博士", "硕士", "本科", "大专", "中专", "高中", "初中", "小学", "研究生"])
+
+    @property
+    def certificate_type(self):
+        """证件类型"""
+        return random.choice(["身份证", "居民身份证", "士官证", "军官证", "学生证", "驾驶证", "驾照", "护照", "港澳通行证", "营业执照", "组织机构代码证", "台胞证", "文职干部证", "部队离退休证", "香港特区护照/身份证明", "澳门特区护照/身份证明", "台湾居民来往大陆通行证", "境外永久居住证", "户口薄"])
+
+    @property
+    def marital_status(self):
+        """婚姻状态"""
+        return random.choice(["未婚", "已婚", "离婚", "丧偶", "离异"])
 
     @property
     def passport_number(self) -> str:
@@ -99,21 +115,21 @@ class Faker:
 
     @property
     def address(self) -> str:
-        """地址信息
+        """地址
 
         如果要生成和身份证号一致的数据，应该使用：:func:`Faker().info`。
 
         """
-        return self.info['address']
+        return self.info['地址']
 
     @property
     def id_area(self) -> str:
         """身份证号"""
-        return self.info['id_card']
+        return self.info['身份证号']
 
     @property
     def mac_address(self) -> str:
-        """生成MAC地址"""
+        """MAC地址"""
         mac_parts = [random.randint(0x00, 0xff)
                      for _ in range(6)]  # 生成六个随机的十六进制数
         # 使用冒号分隔，也可以使用 '-' 或其他分隔符
@@ -122,7 +138,7 @@ class Faker:
 
     @property
     def phone_number(self) -> int:
-        """生成手机号"""
+        """手机号"""
         prefix = random.choice(['130', '131', '132', '133', '134', '135', '136', '137', '138', '139',
                                 '150', '151', '152', '153', '155', '156', '157', '158', '159',
                                 '180', '181', '182', '183', '184', '185', '186', '187', '188', '189'])
@@ -134,22 +150,26 @@ class Faker:
 
     @property
     def home_phone_number(self) -> str:
-        """生成座机号码"""
+        """座机号码"""
         return f"057{random.choice(string.digits)}-{random.choice(string.digits[1:])}{''.join(random.choice(string.digits) for _ in range(7))}"
 
     @property
     def latitude(self) -> float:
-        """纬度"""
-        return round(random.uniform(-90, 90), 6)
+        """纬度
+
+        N（北） 表示北半球。
+        S（南） 表示南半球。
+        """
+        return f"{round(random.uniform(-90, 90), 6)}°{random.choice(['N','S'])}"
 
     @property
     def longitude(self) -> float:
-        """经度"""
-        return round(random.uniform(-180, 180), 6)
+        """经度
 
-    @property
-    def warning(self) -> str:
-        return "数据仅用于测试目的！"
+        E（东） 表示东经。
+        W（西） 表示西经。
+        """
+        return f"{round(random.uniform(-180, 180), 6)}°{random.choice(['E','W'])}"
 
     @property
     def occupation(self) -> str:
@@ -166,7 +186,7 @@ class Faker:
 
     @property
     def ipv4(self) -> str:
-        """生成随机的欧洲国家 IP 地址"""
+        """随机的欧洲国家 IP 地址"""
         europe_ip_prefixes = [
             "1", "2", "5", "25", "31",
             "37", "46", "62", "77", "78",
@@ -184,7 +204,7 @@ class Faker:
 
     @property
     def school(self) -> str:
-        """随机的学校名称"""
+        """学校名称"""
         return random.choice([
             '麻省理工学院', '牛津大学', '斯坦福大学', '剑桥大学', '哈佛大学', '加州理工学院',
             '帝国理工学院', '苏黎世联邦理工大学', '伦敦大学学院', '芝加哥大学'
@@ -192,7 +212,7 @@ class Faker:
 
     @property
     def name(self) -> str:
-        """随机的姓名"""
+        """姓名"""
         surnames: list[str] = [
             "赵", "钱", "孙", "李", "周", "吴", "郑", "王", "冯", "陈", "褚", "卫", "蒋", "沈", "韩", "杨",
             "朱", "秦", "尤", "许", "何", "吕", "施", "张", "孔", "曹", "严", "华", "金", "魏", "陶", "姜",
@@ -233,7 +253,7 @@ class Faker:
         return random.randint(16, 101)
 
     @property
-    def ethnicities(self) -> int:
+    def ethnicities(self):
         """民族"""
         chinese_ethnicities = [
             "汉族", "蒙古族", "回族", "藏族", "维吾尔族", "苗族", "彝族", "壮族", "布依族", "朝鲜族",
@@ -245,3 +265,21 @@ class Faker:
             "基诺族"
         ]
         return random.choice(chinese_ethnicities)
+
+    @property
+    def housing(self):
+        """小区"""
+        from .data._housing import housing
+        return random.choice(housing)
+
+    def country(self, en: bool = False):
+        """国家名"""
+        from .data._country import en_country, zh_country
+        if en:
+            return random.choice(en_country)
+        return random.choice(zh_country)
+
+
+if __name__ == '__main__':
+    faker = Faker()
+    print(faker.country())

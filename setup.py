@@ -2,12 +2,12 @@ from distutils.core import setup
 
 setup(
     name='fast',
-    version='0.3.2',
+    version='0.3.6',
     description='辅助测试的工具包',
     author='sfwwslm',
     author_email='sfwwslm@gmail.com',
     url='https://github.com/sfwwslm/tools.git',
-    packages=['fast'],
+    packages=['fast', 'fast/data'],
     package_dir={"": "src"},
     install_requires=[],
     keywords='test faker',
