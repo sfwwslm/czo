@@ -278,8 +278,3 @@ class Faker:
         if en:
             return random.choice(en_country)
         return random.choice(zh_country)
-
-
-if __name__ == '__main__':
-    faker = Faker()
-    print(faker.country())
