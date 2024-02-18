@@ -223,9 +223,9 @@ class FastDate:
         parsed_date = parsed_date + datetime.timedelta(hours=8)
         # 格式化为想要的时间格式
         return parsed_date.strftime("%Y-%m-%d %H:%M:%S")
-    
+
     @staticmethod
-    def now_statr_end(timestamp:bool=False) -> tuple:
+    def now_statr_end(timestamp: bool = False) -> tuple:
         """
         返回当前日期的开始和结束时间。
 
@@ -245,3 +245,13 @@ class FastDate:
         if timestamp:
             return int(start_of_day.timestamp()), int(end_of_day.timestamp())
         return str(start_of_day), str(end_of_day)
+
+    @staticmethod
+    def now_digit(fmt="%y%m%d%H%M%S"):
+        """
+        获取当前时间的数字格式。方便创建不同的字面量。
+
+        :param fmt: 格式化字符串，默认为"%y%m%d%H%M%S"
+        :return: 当前时间的数字格式
+        """
+        return time.strftime(fmt, time.localtime(int(time.time())))
