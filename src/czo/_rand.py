@@ -92,3 +92,11 @@ class Random:
                 sys_random.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(length))
 
         return "".join(sys_random.choice(string.ascii_letters + string.digits) for _ in range(length))
+
+    @staticmethod
+    def get_hash():
+        """获取随机字符串的MD5哈希"""
+        letters = string.ascii_letters
+        rand = ''.join(random.sample(letters, 10))
+        hash = hashlib.md5(rand.encode()).hexdigest()
+        return hash
