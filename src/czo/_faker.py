@@ -59,7 +59,7 @@ class Faker:
         返回值:
             包含随机生成的个人信息的字典，例如姓名、性别、年龄、职业等。
         """
-        area_code_dt = self.__areaCodeDict  # 调用生成字典
+        area_code_dt = self.__areaCodeDict  # 生成字典
         area_cd = self.__areaCode(area_code_dt)  # 生成区域码
         area_cd_name = area_code_dt[area_cd]  # 获取区域名称
         birth_dy = self.__birthDay  # 生成出生日期
@@ -220,20 +220,17 @@ class Faker:
             "鲁", "韦", "昌", "马", "苗", "凤", "花", "方", "俞", "任", "袁", "柳", "酆", "鲍", "史", "唐",
             "费", "廉", "岑", "薛", "雷", "贺", "倪", "汤", "滕", "殷", "罗", "毕", "郝", "邬", "安", "常",
             "乐", "于", "时", "傅", "皮", "卞", "齐", "康", "伍", "余", "元", "卜", "顾", "孟", "平", "黄",
-            "郭"
+            "郭", "轩辕", "公孙", "慕容", "司马"
         ]
 
-        # 常见的名字
         given_names: list[str] = ['伟', '芳', '娜', '秀英', '敏', '静', '丽', '强', '磊',
                                   '军', '洋', '勇', '艳', '杰', '娟', '博', '文', '涛', '慧', '明',
-                                  '建国', '丽丽'
+                                  '建国', '丽丽', '媛', '子涵', '子轩', '浩然', '昊然', '浩'
                                   ]
 
-        # 随机选择姓氏和名字
         surname: str = random.choice(surnames)
         given_name: str = random.choice(given_names)
 
-        # 组合为完整的名字
         full_name: str = surname + given_name
 
         return full_name
