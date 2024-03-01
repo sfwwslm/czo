@@ -16,8 +16,8 @@ class Random:
         生成随机文件并返回文件路径和文件的 MD5 哈希值。
 
         该函数用于生成一个随机文件，并返回该文件的路径和MD5哈希值。
-        可以通过传入参数指定文件内容，默认为None。函数首先生成一个随机字符串，
-        并将其与UUID结合，作为临时文件的名称。然后，根据传入的内容将文件写入临时文件中。
+        可以通过传入参数指定文件内容，默认为None。函数首先生成一个随机字符串作为
+        临时文件的名称。然后，根据传入的内容将文件写入临时文件中。
         最后，使用hashlib库计算临时文件的MD5哈希值，并将临时文件移动到指定路径上。
         函数返回一个包含文件路径和MD5哈希值的元组。
 
@@ -38,7 +38,7 @@ class Random:
             string.ascii_letters + string.digits, 20)
         random_value: str = ''.join(rand_str) + '\n' + str(uuid.uuid4())
 
-        temp_name = '.temp123qwe231'
+        temp_name = f'.{Random.get_hash()}'
         with open(temp_name, 'w') as w:
             if data is not None:
                 w.write(f"{data}\n{random_value}")
