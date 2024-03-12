@@ -107,13 +107,14 @@ class FastDate:
         return int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
 
     @staticmethod
-    def difference_time_two(date1, date2) -> float:
+    def difference_time_two(date1: str, date2: str, reversal: bool = False) -> float:
         """
         计算两个日期之间的时间差（以秒为单位）。
 
         Args:
             date1: 第一个日期，格式为"%Y-%m-%d %H:%M:%S"。
             date2: 第二个日期，格式为"%Y-%m-%d %H:%M:%S"。
+            reversal: 是否将第一个日期作为基准日期，默认为False。
 
         Returns:
             两个日期之间的时间差，以秒为单位。
@@ -124,7 +125,9 @@ class FastDate:
         """
         date1 = datetime.datetime.strptime(date1, "%Y-%m-%d %H:%M:%S")
         date2 = datetime.datetime.strptime(date2, "%Y-%m-%d %H:%M:%S")
-        return (date1 - date2).total_seconds()
+        if reversal:
+            date1, date2 = date2, date1
+        return (date2 - date1).total_seconds()
 
     @staticmethod
     def date_before_minutes(value) -> str:
