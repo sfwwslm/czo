@@ -38,7 +38,7 @@ class Random:
             string.ascii_letters + string.digits, 20)
         random_value: str = ''.join(rand_str) + '\n' + str(uuid.uuid4())
 
-        temp_name = f'.{Random.get_hash()}'
+        temp_name = f'.{Random.random_hash()}'
         with open(temp_name, 'w') as w:
             if data is not None:
                 w.write(f"{data}\n{random_value}")
@@ -94,9 +94,16 @@ class Random:
         return "".join(sys_random.choice(string.ascii_letters + string.digits) for _ in range(length))
 
     @staticmethod
-    def get_hash():
-        """获取随机字符串的MD5哈希"""
-        letters = string.ascii_letters
+    def random_hash(len: int|None = None) -> str:
+        """获取随机字符串的MD5哈希
+
+        Args:
+            len (int, optional): 最大返回32长度字符串.
+
+        Returns:
+            _type_: str
+        """
+        letters = string.printable
         rand = ''.join(random.sample(letters, 10))
         hash = hashlib.md5(rand.encode()).hexdigest()
-        return hash
+        return hash[:len]
