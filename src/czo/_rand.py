@@ -1,4 +1,5 @@
 import hashlib
+import ipaddress
 import random
 import secrets
 import shutil
@@ -11,7 +12,7 @@ class Random:
     随机生成一些测试数据
     """
     @staticmethod
-    def random_file(data: str | None = None) -> tuple:
+    def file(data: str | None = None) -> tuple:
         """
         生成随机文件并返回文件路径和文件的 MD5 哈希值。
 
@@ -51,7 +52,7 @@ class Random:
         return temp_path, md5
 
     @staticmethod
-    def random_str(length: int, is_zh: bool = False, mark: bool = False, is_int: bool = False) -> str:
+    def str(length: int, is_zh: bool = False, mark: bool = False, is_int: bool = False) -> str:
         """
         生成指定长度的随机字符串。
 
@@ -94,7 +95,7 @@ class Random:
         return "".join(sys_random.choice(string.ascii_letters + string.digits) for _ in range(length))
 
     @staticmethod
-    def random_hash(len: int | None = None) -> str:
+    def hash(len: int | None = None) -> str:
         """
         生成一个随机的MD5哈希字符串。
 
@@ -111,7 +112,7 @@ class Random:
         return hash[:len]
 
     @staticmethod
-    def random_hash_uuid4(len: int | None = None) -> str:
+    def hash_uuid4(len: int | None = None) -> str:
         """
         生成一个基于UUID4的随机哈希字符串。
 
@@ -125,3 +126,23 @@ class Random:
         u4 = uuid.uuid4()
         hash = hashlib.md5(u4.bytes).hexdigest()
         return hash[:len]
+
+    @staticmethod
+    def ipv4():
+        """
+        生成一个随机的IPv4地址。
+
+        Returns:
+        - IPv4Address: 一个随机生成的IPv4地址对象。
+        """
+        return ipaddress.IPv4Address(random.randint(0, 2**32-1))
+
+    @staticmethod
+    def ipv6():
+        """
+        生成一个随机的IPv6地址。
+
+        Returns:
+        - IPv6Address: 返回一个随机生成的IPv6地址对象。
+        """
+        return ipaddress.IPv6Address(random.randint(0, 2**128-1))
