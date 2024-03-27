@@ -94,16 +94,34 @@ class Random:
         return "".join(sys_random.choice(string.ascii_letters + string.digits) for _ in range(length))
 
     @staticmethod
-    def random_hash(len: int|None = None) -> str:
-        """获取随机字符串的MD5哈希
+    def random_hash(len: int | None = None) -> str:
+        """
+        生成一个随机的MD5哈希字符串。
 
         Args:
-            len (int, optional): 最大返回32长度字符串.
+        - len: int | None - 生成的哈希字符串的长度。如果为None，则返回完整的MD5哈希字符串（32个字符）。
 
         Returns:
-            _type_: str
+        - str: 生成的MD5哈希字符串。根据`len`参数可能被截断。
         """
+
         letters = string.printable
         rand = ''.join(random.sample(letters, 10))
         hash = hashlib.md5(rand.encode()).hexdigest()
+        return hash[:len]
+
+    @staticmethod
+    def random_hash_uuid4(len: int | None = None) -> str:
+        """
+        生成一个基于UUID4的随机哈希字符串。
+
+        Args:
+        - len: 需要返回的哈希字符串的长度。如果为None，则返回整个哈希字符串。
+
+        Returns:
+        - str: 根据指定长度生成的哈希字符串。
+        """
+
+        u4 = uuid.uuid4()
+        hash = hashlib.md5(u4.bytes).hexdigest()
         return hash[:len]
