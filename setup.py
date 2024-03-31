@@ -12,5 +12,5 @@ setup(
     package_dir={"": "src"},
     install_requires=['setuptools>=69.2.0', 'wheel'],
     keywords='test faker rand',
-    python_requires=">=3.10.*"
+    python_requires=">=3.10"
 )
