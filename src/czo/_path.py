@@ -161,7 +161,7 @@ class DirLib:
                 else:
                     # 如果指定了新路径，则在新路径下重命名
                     new_path = Path(new_path)
-                    Path.is_none_then_mkdir(new_path)  # 确保新路径存在
+                    PathLib.is_none_then_mkdir(new_path)  # 确保新路径存在
                     new_directory_path: Path = new_path / new_directory_name
 
                 if new_directory_path.exists():
