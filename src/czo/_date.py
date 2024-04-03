@@ -114,13 +114,13 @@ class FastDate:
         Args:
             date1: 第一个日期，格式为"%Y-%m-%d %H:%M:%S"。
             date2: 第二个日期，格式为"%Y-%m-%d %H:%M:%S"。
-            reversal: 是否将第一个日期作为基准日期，默认为False。
+            reversal: 默认使用 date2 - date1 的方式计算时间差，如果为 True，则使用 date1 - date2 的方式计算时间差。
 
         Returns:
             两个日期之间的时间差，以秒为单位。
 
         Examples:
-            >>> difference_time_two("2022-01-01 12:00:00", "2022-01-01 10:00:00")
+            >>> difference_time_two("2022-01-01 10:00:00", "2022-01-01 12:00:00")
             7200.0
         """
         date1 = datetime.datetime.strptime(date1, "%Y-%m-%d %H:%M:%S")
