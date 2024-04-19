@@ -146,3 +146,10 @@ class Random:
         - IPv6Address: 返回一个随机生成的IPv6地址对象。
         """
         return ipaddress.IPv6Address(random.randint(0, 2**128-1))
+
+    @staticmethod
+    def mac():
+
+        mac_address = ':'.join(['{:02x}'.format(
+            (uuid.getnode() >> elements) & 0xff) for elements in range(0, 2*6, 2)])
+        return mac_address

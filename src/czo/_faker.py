@@ -2,8 +2,10 @@ import datetime
 import random
 import string
 
+from .utils import Singleton
 
-class Faker:
+
+class Faker(Singleton):
     """伪造常用数据"""
 
     @property
