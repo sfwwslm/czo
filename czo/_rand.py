@@ -5,6 +5,7 @@ import secrets
 import shutil
 import string
 import uuid
+from typing import Literal
 
 
 class Random:
@@ -52,36 +53,48 @@ class Random:
         return temp_path, md5
 
     @staticmethod
-    def str(length: int, is_zh: bool = False, mark: bool = False, is_int: bool = False) -> str:
+    def str(length: int = 1, is_zh: bool = False, mark: bool = False, is_int: bool = False, zh_code_is_unicode=False) -> str:
         """
-        生成指定长度的随机字符串。
+        生成指定长度的随机大小写字母、数字组成的字符串。
 
         Args:
             length (int): 字符串长度。
             is_zh (bool, optional): 是否包含中文字符，默认为 False。
-            mark (bool, optional): 是否包含标点符号，默认为 False。
+            mark (bool, optional): 默认生成的字符串是否包含标点符号，默认为 False。
             is_int (bool, optional): 是否生成随机整数字符串，默认为 False。
+            zh_code_is_unicode (bool, optional): 使用Unicode编码生成中文字符。默认使用GBK编码生成更常见的中文字符。
 
         Returns:
             str: 生成的随机字符串。
 
-        Example:
-            ```python
-            result = random_str(10)
-            print(result)  # 输出: "random_str"
-            ```
+        Examples:
+        >>> print(Random.str(1))   
+
         """
 
-        def generate_chinese():
-            result = ""
+        def Unicode() -> str:
+            result: Literal[''] = ""
             for _ in range(length):
-                # 生成随机的中文字符
                 char = chr(random.randint(0x4E00, 0x9FA5))
                 result += char
             return result
 
+        def GBK2312() -> str:
+            result: Literal[''] = ""
+            for _ in range(length):
+                head = random.randint(0xb0, 0xf7)
+                body = random.randint(0xa1, 0xfe)
+                val = f'{head:x} {body:x}'
+                str = bytes.fromhex(val).decode('gb2312')
+                result += str
+            return result
+
         if is_zh:
-            return generate_chinese()
+            if zh_code_is_unicode:
+                return Unicode()
+            else:
+                return GBK2312()
+
         if is_int:
             return ''.join(str(secrets.randbelow(10)) for _ in range(length))
 
