@@ -7,7 +7,7 @@ from typing import Any, Generator
 class NetLib:
 
     @staticmethod
-    def cidr(address, netmask_or_prefix) -> dict[str, Any] | ValueError:
+    def cidr(address: str, netmask_or_prefix: int | str) -> dict[str, Any] | ValueError:
         """
         根据指定的网络和前缀长度计算CIDR信息。
 
