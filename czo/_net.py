@@ -26,8 +26,8 @@ class NetLib:
         """
 
         try:
-            ipType: ipaddress.IPv6Network | ipaddress.IPv4Network = ipaddress.IPv6Network if ':' in address else ipaddress.IPv4Network
-            cidr = ipType(f'{address}/{netmask_or_prefix}')
+            ip_type: ipaddress.IPv6Network | ipaddress.IPv4Network = ipaddress.IPv6Network if ':' in address else ipaddress.IPv4Network
+            cidr = ip_type(f'{address}/{netmask_or_prefix}')
 
             # 输出网络地址、子网掩码、广播地址等信息
             host_count = cidr.num_addresses - 2
@@ -44,7 +44,7 @@ class NetLib:
             return e
 
     @staticmethod
-    def ipaddress_generator(number: int, max: int = 254, isIpv6: bool = False,  **kwargs) -> Generator[IPv4Address, IPv6Address, None]:
+    def ipaddress_generator(number: int, max: int = 254, is_ipv6: bool = False,  **kwargs) -> Generator[IPv4Address, IPv6Address, None]:
         """
         生成指定数量的IP地址序列。
 
@@ -71,15 +71,15 @@ class NetLib:
         g: int = kwargs.get("g", 1)
         h: int = kwargs.get("h", 1)
 
-        if isIpv6 is False:
+        if is_ipv6 is False:
             a_range: int = 256
             b_range: int = 256
             c_range: int = 256
             d_range: int = 255
-            ipList: list = []
+            ip_list: list = []
             count: int = 0
             for _ in range(1, max+1):
-                ipList.append(ipaddress.IPv4Address(f"{a}.{b}.{c}.{d}"))
+                ip_list.append(ipaddress.IPv4Address(f"{a}.{b}.{c}.{d}"))
                 count += 1
                 d += 1
 
@@ -95,11 +95,11 @@ class NetLib:
                             if a == a_range:
                                 a = 1
 
-                if len(ipList) % number == 0:
-                    yield ipList
-                    ipList = []
-                if max == count and len(ipList) != 0:
-                    yield ipList
+                if len(ip_list) % number == 0:
+                    yield ip_list
+                    ip_list = []
+                if max == count and len(ip_list) != 0:
+                    yield ip_list
         else:
             a_range: int = 65536
             b_range: int = 65536
@@ -109,10 +109,10 @@ class NetLib:
             f_range: int = 65536
             g_range: int = 65536
             h_range: int = 65536
-            ipList: list = []
+            ip_list: list = []
             count: int = 0
             for _ in range(1, max+1):
-                ipList.append(ipaddress.IPv6Address(
+                ip_list.append(ipaddress.IPv6Address(
                     f"{a:04x}:{b:04x}:{c:04x}:{d:04x}:{e:04x}:{f:04x}:{g:04x}:{h:04x}"))
                 count += 1
                 h += 1
@@ -141,11 +141,11 @@ class NetLib:
                                             if a == a_range:
                                                 a = 1
 
-                if len(ipList) % number == 0:
-                    yield ipList
-                    ipList = []
-                if max == count and len(ipList) != 0:
-                    yield ipList
+                if len(ip_list) % number == 0:
+                    yield ip_list
+                    ip_list = []
+                if max == count and len(ip_list) != 0:
+                    yield ip_list
 
     @staticmethod
     def ip_in_subnet(ip_str, subnet_str):
@@ -212,9 +212,9 @@ class NetLib:
         e_range: int = 256
         f_range: int = 256
         count = 0
-        macList = []
+        mac_list = []
         for _ in range(1, max+1):
-            macList.append(f"{a:02x}:{b:02x}:{c:02x}:{d:02x}:{e:02x}:{f:02x}")
+            mac_list.append(f"{a:02x}:{b:02x}:{c:02x}:{d:02x}:{e:02x}:{f:02x}")
             count += 1
             f += 1
             if f == f_range:
@@ -234,8 +234,8 @@ class NetLib:
                                 a = a+1
                                 if a == a_range:
                                     a = 1
-            if len(macList) % number == 0:
-                yield macList
-                macList = []
-            if max == count and len(macList) != 0:
-                yield macList
+            if len(mac_list) % number == 0:
+                yield mac_list
+                mac_list = []
+            if max == count and len(mac_list) != 0:
+                yield mac_list
