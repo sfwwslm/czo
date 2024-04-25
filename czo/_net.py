@@ -44,7 +44,7 @@ class NetLib:
             return e
 
     @staticmethod
-    def ipaddress_generator(number: int, isIpv6: bool = False, max: int = 254, **kwargs) -> Generator[IPv4Address, IPv6Address, None]:
+    def ipaddress_generator(number: int, max: int = 254, isIpv6: bool = False,  **kwargs) -> Generator[IPv4Address, IPv6Address, None]:
         """
         生成指定数量的IP地址序列。
 
