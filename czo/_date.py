@@ -2,10 +2,25 @@ import datetime
 import time
 
 
-class FastDate:
+class DateLib:
     """
-   提供了一组静态方法，用于处理日期和时间的常见操作。
-   """
+    提供了一组静态方法，用于处理日期和时间的常见操作。
+    """
+
+    @staticmethod
+    def timestamp() -> int:
+        """
+        返回当前时间的时间戳。
+        """
+        return int(time.time())
+
+    @staticmethod
+    def timestamp_ms() -> int:
+        """
+        返回当前时间的时间戳。
+        """
+        return int(time.time() * 1000)
+
     @staticmethod
     def now_date() -> str:
         """
