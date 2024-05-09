@@ -146,9 +146,9 @@ class Random:
         生成一个随机的IPv4地址。
 
         Returns:
-        - IPv4Address: 一个随机生成的IPv4地址对象。
+        - IPv4Address: 一个随机生成的IPv4地址。
         """
-        return ipaddress.IPv4Address(random.randint(0, 2**32-1))
+        return ipaddress.IPv4Address(random.randint(0, 2**32-1)).__str__()
 
     @staticmethod
     def ipv6():
@@ -156,13 +156,42 @@ class Random:
         生成一个随机的IPv6地址。
 
         Returns:
-        - IPv6Address: 返回一个随机生成的IPv6地址对象。
+        - IPv6Address: 返回一个随机生成的IPv6地址。
         """
-        return ipaddress.IPv6Address(random.randint(0, 2**128-1))
+        return ipaddress.IPv6Address(random.randint(0, 2**128-1)).__str__()
 
     @staticmethod
-    def mac():
+    def ipv4_range():
+        ip4 = ".".join(Random.ipv4().split(".")[:3])
+        return f"{ip4}.{random.randint(1, 100)}-{ip4}.{random.randint(110, 254)}"
 
+    @staticmethod
+    def ipv6_range():
+        ip6 = ":".join(Random.ipv6().split(":")[:7])
+        return f"{ip6}:{random.randint(1, 10000):x}-{ip6}:{random.randint(20000, 65500):x}"
+
+    @staticmethod
+    def ipv4_netmask():
+        """
+        生成一个随机的IPv4子网掩码。
+        """
+        ip4 = ".".join(Random.ipv4().split(".")[:3])
+        return f"{ip4}.0/{random.randint(8, 32)}"
+
+    @staticmethod
+    def ipv6_netmask():
+        """
+        生成一个随机的IPv6子网掩码。
+        """
+        ip6 = ":".join(Random.ipv6().split(":")[:7])
+        return f"{ip6}:0/{random.randint(64, 128)}"
+
+    @staticmethod
+    @property
+    def mac():
+        """
+        生成一个随机的MAC。
+        """
         mac_address = ':'.join(['{:02x}'.format(
             (uuid.getnode() >> elements) & 0xff) for elements in range(0, 2*6, 2)])
         return mac_address
