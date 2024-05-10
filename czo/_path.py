@@ -177,3 +177,19 @@ class DirLib:
         else:
             # 目录为空，不进行重命名
             return False
+
+    @staticmethod
+    def delete_glob_file(dir_path: Path | str, file_name: str):
+        """
+        删除指定目录下匹配的文件
+
+        Example:
+            delete_glob_file(Path("./"), "*.json")
+        """
+        try:
+            for file in dir_path.glob("qemu_info_*.json"):
+                file.unlink()
+        except Exception as e:
+            return e
+
+        return True
