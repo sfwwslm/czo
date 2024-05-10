@@ -5,7 +5,11 @@ import secrets
 import shutil
 import string
 import uuid
+import warnings
 from typing import Literal
+
+# 设置警告过滤器
+warnings.filterwarnings("always")
 
 
 class Random:
@@ -148,6 +152,8 @@ class Random:
         Returns:
         - IPv4Address: 一个随机生成的IPv4地址。
         """
+        warnings.warn(f"`{Random.ipv4.__name__}`已弃用即将删除，改用`Random.ip`",
+                      DeprecationWarning, stacklevel=2)
         return ipaddress.IPv4Address(random.randint(0, 2**32-1)).__str__()
 
     @staticmethod
@@ -158,33 +164,65 @@ class Random:
         Returns:
         - IPv6Address: 返回一个随机生成的IPv6地址。
         """
+
+        warnings.warn(f"`{Random.ipv6.__name__}`已弃用即将删除，改用`Random.ip`",
+                      DeprecationWarning, stacklevel=2)
         return ipaddress.IPv6Address(random.randint(0, 2**128-1)).__str__()
 
     @staticmethod
-    def ipv4_range():
-        ip4 = ".".join(Random.ipv4().split(".")[:3])
-        return f"{ip4}.{random.randint(1, 100)}-{ip4}.{random.randint(110, 254)}"
+    def ip(is_ipv6: bool = False) -> str:
+        """
+        生成一个随机的IP地址。
+        """
+        if is_ipv6:
+            return ipaddress.IPv6Address(random.randint(0, 2**128-1)).__str__()
+        else:
+            return ipaddress.IPv4Address(random.randint(0, 2**32-1)).__str__()
 
     @staticmethod
-    def ipv6_range():
-        ip6 = ":".join(Random.ipv6().split(":")[:7])
-        return f"{ip6}:{random.randint(1, 10000):x}-{ip6}:{random.randint(20000, 65500):x}"
+    def ip_suffix_is_0(is_ipv6: bool = False, suffix: str = 0) -> str:
+        """
+        生成一个随机后缀为`0`|`suffix`的IP地址。
+        """
+        if is_ipv6:
+            return ":".join(
+                [f"{random.randint(0, 65535):x}" for _ in range(4)]) + f"::{suffix}"
+        else:
+            return ".".join(
+                [f"{random.randint(0, 255)}" for _ in range(3)]) + f".{suffix}"
 
     @staticmethod
-    def ipv4_netmask():
+    def ip_range(is_ipv6: bool = False):
         """
-        生成一个随机的IPv4子网掩码。
+        生成一个IP地址范围，可以是IPv4或IPv6地址格式。
+
+        Args:
+        - is_ipv6: bool 值，用于指定生成IPv4还是IPv6地址范围。默认为False，表示生成IPv4地址范围。
+
+        Returns:
+        - 返回一个字符串，表示IP地址范围。如果is_ipv6为True，则返回IPv6地址范围，否则返回IPv4地址范围。
         """
-        ip4 = ".".join(Random.ipv4().split(".")[:3])
-        return f"{ip4}.0/{random.randint(8, 32)}"
+        if is_ipv6:
+            ip = ":".join(
+                [f"{random.randint(0, 65535):x}" for _ in range(4)])
+            return f"{ip}::{random.randint(1, 10000):x}-{ip}::{random.randint(20000, 65500):x}"
+        else:
+            ip = ".".join(
+                [f"{random.randint(0, 255)}" for _ in range(3)])
+            return f"{ip}.{random.randint(1, 100)}-{ip}.{random.randint(110, 254)}"
 
     @staticmethod
-    def ipv6_netmask():
+    def ip_netmask(is_ipv6: bool = False, netmask: int | None = None):
         """
-        生成一个随机的IPv6子网掩码。
+        生成一个随机的IP子网掩码格式。
         """
-        ip6 = ":".join(Random.ipv6().split(":")[:7])
-        return f"{ip6}:0/{random.randint(64, 128)}"
+        if is_ipv6:
+            netmask = netmask if netmask is not None else random.randint(
+                64, 128)
+            return f"{Random.ip_suffix_is_0(True)}/{netmask}"
+        else:
+            netmask = netmask if netmask is not None else random.randint(8, 32)
+            return f"{Random.ip_suffix_is_0()}/{netmask}"
 
     @staticmethod
     @property
