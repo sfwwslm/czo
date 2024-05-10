@@ -1,3 +1,4 @@
+# https://packaging.python.org/en/latest/tutorials/packaging-projects/#uploading-your-project-to-pypi
 [build-system]
 requires = [
     "hatchling",
