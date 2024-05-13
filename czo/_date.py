@@ -265,13 +265,17 @@ class DateLib:
         return str(start_of_day), str(end_of_day)
 
     @staticmethod
-    def now_digit(fmt="%y%m%d%H%M%S"):
-        """获取当前时间的数字格式。方便创建不同的字面量。
+    def fmt_date(fmt="%Y-%m-%d %H:%M:%S") -> str:
+        """格式化当前时间。方便创建不同的字面量。
 
         Args:
-            fmt (str, optional): 格式化字符串. Defaults to "%y%m%d%H%M%S".
+            fmt (str): 格式. Defaults to "%Y-%m-%d %H:%M:%S".
 
         Returns:
-            _type_: 当前时间的数字格式
+            str: 当前时间格式化后的时间字符串
+
+        Examples:
+            >>> fmt_date()
+            "2024-05-13 14:58:18"
         """
         return time.strftime(fmt, time.localtime(int(time.time())))
