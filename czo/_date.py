@@ -138,8 +138,8 @@ class DateLib:
             >>> difference_time_two("2022-01-01 10:00:00", "2022-01-01 12:00:00")
             7200.0
         """
-        date1 = datetime.datetime.strptime(date1, "%Y-%m-%d %H:%M:%S")
-        date2 = datetime.datetime.strptime(date2, "%Y-%m-%d %H:%M:%S")
+        date1 = datetime.datetime.strptime(date1.strip(), "%Y-%m-%d %H:%M:%S")
+        date2 = datetime.datetime.strptime(date2.strip(), "%Y-%m-%d %H:%M:%S")
         if reversal:
             date1, date2 = date2, date1
         return (date2 - date1).total_seconds()
