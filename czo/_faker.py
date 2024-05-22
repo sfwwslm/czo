@@ -11,8 +11,8 @@ class Faker(Singleton):
     @property
     def __areaCodeDict(self) -> dict:
         """区域文件地址"""
-        from .data._internal_utils import dataDict
-        return dataDict
+        from .data._internal_utils import data_dict
+        return data_dict
 
     def __areaCode(self, dict) -> int:
         """功能：随机生产一个区域码"""
@@ -122,7 +122,20 @@ class Faker(Singleton):
         如果要生成和身份证号一致的数据，应该使用：:func:`Faker().info`。
 
         """
-        return self.info['地址']
+        # return self.info['地址']
+
+        from .data._addr import addr_info_list
+        return random.choice(addr_info_list)
+
+    @property
+    def shop_sign(self) -> str:
+        """店铺名称
+
+        Returns:
+            str: _description_
+        """
+        from .data._shop_sign import shop_sign_list
+        return random.choice(shop_sign_list)
 
     @property
     def id_area(self) -> str:
