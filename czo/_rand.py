@@ -62,7 +62,7 @@ class Random:
         生成指定长度的随机大小写字母、数字组成的字符串。
 
         Args:
-            length (int): 字符串长度。
+            length (int): 字符串长度。越短重复的概率越高。
             is_zh (bool, optional): 是否包含中文字符，默认为 False。
             mark (bool, optional): 默认生成的字符串是否包含标点符号，默认为 False。
             is_int (bool, optional): 是否生成随机整数字符串，默认为 False。
@@ -102,13 +102,13 @@ class Random:
         if is_int:
             return ''.join(str(secrets.randbelow(10)) for _ in range(length))
 
-        from random import SystemRandom
-        sys_random = SystemRandom()
+        # 选择字符集
+        characters = string.ascii_letters + string.digits
 
         if mark:
-            return "".join(
-                sys_random.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(length))
+            characters += string.punctuation
 
+        sys_random = random.SystemRandom()
         return "".join(sys_random.choice(string.ascii_letters + string.digits) for _ in range(length))
 
     @staticmethod
