@@ -44,21 +44,21 @@ class NetLib:
             return e
 
     @staticmethod
-    def ipaddress_generator(number: int, max: int = 254, is_ipv6: bool = False,  **kwargs) -> Generator[IPv4Address, IPv6Address, None]:
+    def ipaddress_generator(number: int, max: int | None = None, is_ipv6: bool = False,  **kwargs) -> Generator[IPv4Address, IPv6Address, None]:
         """
         生成指定数量的IP地址序列。
 
         Args:
         - number: 每次生成的IP地址数量。
-        - isIpv6: 是否生成IPv6地址，默认为False，即生成IPv4地址。
-        - max: 生成IP地址的最大数量。
+        - max: 生成IP地址的最大数量, 为空时使用 number。
+        - is_ipv6: 是否生成IPv6地址，默认生成IPv4地址。
         - **kwargs: 可选参数，用于指定IP地址的a、b、c、d、e、f、g、h初始值。
 
         Returns:
         - Generator: 生成器，每次返回number个IP地址组成的列表，直到生成max个IP地址为止。
 
         Examples:
-        >>> for i in Net.ipaddress_generator(10, True, startNumber=1, max=100):
+        >>> for i in NetLib.ipaddress_generator(10, max=100):
         ...    print(";".join(map(lambda x: f"http://{str(x)}", i)))
 
         """
@@ -70,6 +70,9 @@ class NetLib:
         f: int = kwargs.get("f", 1)
         g: int = kwargs.get("g", 1)
         h: int = kwargs.get("h", 1)
+
+        if max is None:
+            max = number
 
         if is_ipv6 is False:
             a_range: int = 256
