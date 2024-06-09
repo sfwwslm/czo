@@ -41,7 +41,7 @@ class PathLib:
             KeyError - 如果关键词列表为空，则抛出此异常。
 
         Examples:
-            >>> del_key_directory(r'C:\Users\user\Documents', 'example')
+            >>> del_key_directory('C:/Users/user/Documents', 'example')
             >>> del_key_directory('C:/Users/user/Documents', ['example', 'test'])
             >>> del_key_directory('C:/Users/user/Documents', ['example', 'test'], confirm=True)
         """
@@ -78,7 +78,7 @@ class PathLib:
                     如果为False，则只打印将要删除的文件名。
 
         Examples:
-            >>> del_key_file(r'C:\Users\user\Documents', 'example')
+            >>> del_key_file('C:/Users/user/Documents', 'example')
             >>> del_key_file('C:/Users/user/Documents', 'example', confirm=True)
         """
         file_list = [os.path.join(dirname, filename) for dirname, subdir, filenames in
