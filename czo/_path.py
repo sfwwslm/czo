@@ -28,19 +28,103 @@ class PathLib:
                 shutil.rmtree(file_path)
 
     @staticmethod
-    def clear_key_file(dir_path, keyword) -> None:
+    def del_key_directory(path: str, keywords: str | list[str], confirm: bool = False):
         """
-        删除一个目录下包含关键字的文件
+        清理指定目录中包含特定关键词的子目录。
 
         Args:
-            dir_path: 要检索的目录
-            keyword:文件名中包含的关键字
+            path: str - 要清理的目录路径。
+            keywords: str | list[str] - 要查找和处理的关键词或关键词列表。
+            confirm: bool - 删除是不可逆的，默认仅打印找到的子目录路径。如果为True，则删除找到的子目录。
+
+        Raises:
+            KeyError - 如果关键词列表为空，则抛出此异常。
+
+        Examples:
+            >>> del_key_directory(r'C:\Users\user\Documents', 'example')
+            >>> del_key_directory('C:/Users/user/Documents', ['example', 'test'])
+            >>> del_key_directory('C:/Users/user/Documents', ['example', 'test'], confirm=True)
         """
-        file_list = [os.path.join(dir_path, j) for dir_path, dirnames, filenames in
-                     os.walk(dir_path) for j in filenames]
+
+        keys = []
+
+        if len(keywords) < 1:
+            raise KeyError(f"要查找的目录名称不能是空！")
+
+        if isinstance(keywords, str):
+            keys.append(keywords)
+
+        if isinstance(keywords, list):
+            keys.extend(keywords)
+
+        for dirname, subdir, filenames in os.walk(path):
+            for dir_name in subdir:
+                if dir_name in keys:
+                    dir_path = os.path.join(dirname, dir_name)
+                    if confirm:
+                        shutil.rmtree(dir_path)
+                    else:
+                        print(dir_path)
+
+    @staticmethod
+    def del_key_file(path: str, keywords: str, confirm: bool = False) -> None:
+        """
+        清理指定目录下包含特定关键字的文件。
+
+        Args:
+            path: 字符串，指定要搜索的目录路径。
+            keywords: 字符串，指定要查找的关键字。
+            confirm: 布尔值，默认为False。如果设置为True，则实际删除找到的文件；
+                    如果为False，则只打印将要删除的文件名。
+
+        Examples:
+            >>> del_key_file(r'C:\Users\user\Documents', 'example')
+            >>> del_key_file('C:/Users/user/Documents', 'example', confirm=True)
+        """
+        file_list = [os.path.join(dirname, filename) for dirname, subdir, filenames in
+                     os.walk(path) for filename in filenames]
+
         for target_file in file_list:
-            if keyword in target_file:
-                os.remove(target_file)
+            if keywords in target_file:
+                if confirm:
+                    os.remove(target_file)
+                else:
+                    print(f"删除文件：{target_file}")
+
+    @staticmethod
+    def rename_files(path: str, old_string, new_string, confirm=False):
+        """
+        替换文件名中的指定字符串。
+
+        该函数遍历指定路径下的所有文件，如果文件名包含旧字符串，
+        则将其替换为新字符串，并执行重命名操作。如果confirm参数为False，
+        则不会真的重命名文件，只会打印出将要执行的操作。
+
+        Args:
+            path: str - 文件夹路径，从中搜索文件进行重命名。
+            old_string: str - 需要被替换的旧字符串。
+            new_string: str - 用于替换旧字符串的新字符串。
+            confirm: bool - 是否真的执行重命名操作，默认为False，只打印将要执行的操作。
+
+        Examples:
+            >>> rename_files('C:/Users/user/Documents', 'example', 'test')
+            >>> rename_files('C:/Users/user/Documents', 'example', 'test', confirm=True) 
+        """
+
+        for dirname, subdir, filenames in os.walk(path):
+            for filename in filenames:
+                if old_string in filename:
+                    old_file_path = os.path.join(dirname, filename)
+                    new_file_name = filename.replace(old_string, new_string)
+                    new_file_path = os.path.join(dirname, new_file_name)
+
+                    if confirm:
+                        os.rename(old_file_path, new_file_path)
+                    else:
+                        s_len = len(old_file_path.encode("gbk"))
+                        print("*"*s_len)
+                        print(f"{old_file_path}\n{new_file_path}")
+                        print("*"*s_len)
 
     @staticmethod
     def del_key_row(file: str, key: str) -> None:
