@@ -1,4 +1,5 @@
 import datetime
+import random
 import time
 
 
@@ -279,3 +280,37 @@ class DateLib:
             "2024-05-13 14:58:18"
         """
         return time.strftime(fmt, time.localtime(int(time.time())))
+
+    @staticmethod
+    def generate_random_date_and_timestamp(start: str, end: str) -> tuple[datetime.datetime, int]:
+        """
+        生成指定范围内的随机日期和时间戳。
+
+        Args:
+            start -- 字符串格式起始日期。
+            end -- 字符串格式结束日期。
+
+        Returns:
+            random_date -- 随机日期，datetime.datetime 对象。
+            random_timestamp -- 随机日期对应的时间戳，int 类型。
+
+        Examples:
+            >>> start_date = "2024-01-10 07:08:16"
+            >>> end_date = "2024-06-10 07:08:16"
+            >>> random_date, random_timestamp = random_date(start_date, end_date)
+        """
+        # 将字符串日期转换为 datetime 对象
+        start = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
+        end = datetime.datetime.strptime(end, "%Y-%m-%d %H:%M:%S")
+
+        # 将日期转换为时间戳
+        start_timestamp = int(start.timestamp())
+        end_timestamp = int(end.timestamp())
+
+        # 在时间戳范围内生成随机时间戳
+        random_timestamp = random.randint(start_timestamp, end_timestamp)
+
+        # 将随机时间戳转换回日期
+        random_date = datetime.datetime.fromtimestamp(random_timestamp)
+
+        return random_date, random_timestamp
