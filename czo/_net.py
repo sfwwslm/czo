@@ -44,7 +44,7 @@ class NetLib:
             return e
 
     @staticmethod
-    def ipaddress_generator(number: int, max: int | None = None, is_ipv6: bool = False,  **kwargs) -> Generator[IPv4Address, IPv6Address, None]:
+    def ipaddress_generator(number: int, max: int | None = None, is_ipv6: bool = False,  **kwargs) -> Generator[list[str], Any, None]:
         """
         生成指定数量的IP地址序列。
 
@@ -59,7 +59,7 @@ class NetLib:
 
         Examples:
         >>> for i in NetLib.ipaddress_generator(10, max=100):
-        ...    print(";".join(map(lambda x: f"http://{str(x)}", i)))
+        ...    print(";".join(map(lambda x: f"http://{x}", i)))
 
         """
         a: int = kwargs.get("a", 1)
@@ -82,7 +82,8 @@ class NetLib:
             ip_list: list = []
             count: int = 0
             for _ in range(1, max+1):
-                ip_list.append(ipaddress.IPv4Address(f"{a}.{b}.{c}.{d}"))
+                ip_list.append(ipaddress.IPv4Address(
+                    f"{a}.{b}.{c}.{d}").compressed)
                 count += 1
                 d += 1
 
@@ -116,7 +117,7 @@ class NetLib:
             count: int = 0
             for _ in range(1, max+1):
                 ip_list.append(ipaddress.IPv6Address(
-                    f"{a:04x}:{b:04x}:{c:04x}:{d:04x}:{e:04x}:{f:04x}:{g:04x}:{h:04x}"))
+                    f"{a:04x}:{b:04x}:{c:04x}:{d:04x}:{e:04x}:{f:04x}:{g:04x}:{h:04x}").compressed)
                 count += 1
                 h += 1
 
