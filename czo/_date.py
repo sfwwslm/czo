@@ -67,9 +67,9 @@ class DateLib:
 
         Examples:
             >>> timestamp_to_date(1640995200)
-            '2022-01-01 12:00:00'
+            '2022-01-01 00:00:00'
             >>> timestamp_to_date(1640995200000)
-            '2022-01-01 12:00:00'
+            '2022-01-01 00:00:00'
         """
         if len(str(timestamp)) == 13:
             timestamp = int(timestamp) / 1000.0
