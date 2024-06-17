@@ -1,7 +1,6 @@
 import datetime
 import random
 import time
-from codecs import ascii_encode
 
 from czo import DateLib
 
