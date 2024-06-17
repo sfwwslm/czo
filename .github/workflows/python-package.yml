@@ -30,7 +30,12 @@ jobs:
         pip install -r requirements.txt
 
     - name: Set PYTHONPATH
+      if: runner.os != 'Windows'
       run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
+    
+    - name: Set PYTHONPATH (Windows)
+      if: runner.os == 'Windows'
+      run: echo "PYTHONPATH=${{ github.workspace }}" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
       
     - name: Test with pytest
       run: |
