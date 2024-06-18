@@ -61,6 +61,8 @@ class NetLib:
         >>> for i in NetLib.ipaddress_generator(10, max=100):
         ...    print(";".join(map(lambda x: f"http://{x}", i)))
 
+        >>> ip_list = [ip for sublist in NetLib.ipaddress_generator(10, a=100) for ip in sublist]
+
         """
         a: int = kwargs.get("a", 1)
         b: int = kwargs.get("b", 1)
