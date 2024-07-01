@@ -154,6 +154,73 @@ class NetLib:
                     yield ip_list
 
     @staticmethod
+    def generate_ip_list(number: int, is_ipv6: bool = False, v6_exploded: bool = False, **kwargs) -> list[str]:
+        """
+        生成指定数量的IP地址字符串列表。
+
+        Args:
+        - number: 生成IP地址的数量。
+        - is_ipv6: 指示是否生成IPv6地址。
+        - v6_exploded: 指示生成的IPv6地址是否以展开格式表示。
+        - kwargs: 可以提供额外的参数来定制IPv4或IPv6地址的起始值。
+
+        Returns:
+        - 一个包含生成的IP地址字符串的列表。
+
+        Examples:
+        >>> v4 = {
+            "a": 192,
+            "b": 168,
+            "c": 1,
+            "d": 1,
+        }
+        ...    print((NetLib.generate_ip_list(3, **v4)))
+        
+
+        >>> v6 = {
+            "xa": "240e",
+            "xb": "c0a8",
+            "xc": "1",
+            "xd": "1",
+            "xe": "1",
+            "xf": "1",
+            "xg": "1",
+            "xh": "1",
+        }
+        ...    print((NetLib.generate_ip_list(3, True, **v6)))
+
+        """
+        if is_ipv6:
+            # 初始化IPv6的各个段的默认值
+            xa: int = int(kwargs.get("xa", "2001"), 16)
+            xb: int = int(kwargs.get("xb", "db8"), 16)
+            xc: int = int(kwargs.get("xc", "0"), 16)
+            xd: int = int(kwargs.get("xd", "42"), 16)
+            xe: int = int(kwargs.get("xe", "0"), 16)
+            xf: int = int(kwargs.get("xf", "8a2e"), 16)
+            xg: int = int(kwargs.get("xg", "370"), 16)
+            xh: int = int(kwargs.get("xh", "1"), 16)
+
+            # 计算IPv6地址
+            ipv6 = (xa * 2 ** 112) + (xb * 2 ** 96) + (xc * 2 ** 80) + (xd * 2 ** 64) + \
+                (xe * 2 ** 48) + (xf * 2 ** 32) + \
+                (xg * 2 ** 16) + (xh * 2 ** 0)
+
+            # 根据参数生成对应的IP地址列表并返回
+            if v6_exploded:
+                return [ipaddress.IPv6Address(ipv6 + i).exploded for i in range(number)]
+            return [ipaddress.IPv6Address(ipv6 + i).compressed for i in range(number)]
+
+        # 初始化IPv4的各个字节的默认值
+        a: int = kwargs.get("a", 1)
+        b: int = kwargs.get("b", 0)
+        c: int = kwargs.get("c", 0)
+        d: int = kwargs.get("d", 1)
+        # 计算IPv4地址
+        ipv4 = (a * 2 ** 24) + (b * 2 ** 16) + (c * 2 ** 8) + (d * 2 ** 0)
+        return [ipaddress.IPv4Address(ipv4 + i).compressed for i in range(number)]
+
+    @staticmethod
     def ip_in_subnet(ip_str, subnet_str):
         """
 
