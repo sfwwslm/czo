@@ -178,33 +178,33 @@ class NetLib:
 
 
         >>> v6 = {
-            "xa": "240e",
-            "xb": "c0a8",
-            "xc": "1",
-            "xd": "1",
-            "xe": "1",
-            "xf": "1",
-            "xg": "1",
-            "xh": "1",
+            "a": "240e",
+            "b": "c0a8",
+            "c": "1",
+            "d": "1",
+            "e": "1",
+            "f": "1",
+            "g": "1",
+            "h": "1",
         }
         >>> print((NetLib.generate_ip_list(3, True, **v6)))
 
         """
         if is_ipv6:
             # 初始化IPv6的各个段的默认值
-            xa: int = int(kwargs.get("xa", "2001"), 16)
-            xb: int = int(kwargs.get("xb", "db8"), 16)
-            xc: int = int(kwargs.get("xc", "0"), 16)
-            xd: int = int(kwargs.get("xd", "42"), 16)
-            xe: int = int(kwargs.get("xe", "0"), 16)
-            xf: int = int(kwargs.get("xf", "8a2e"), 16)
-            xg: int = int(kwargs.get("xg", "370"), 16)
-            xh: int = int(kwargs.get("xh", "1"), 16)
+            a: int = int(kwargs.get("a", "2001"), 16)
+            b: int = int(kwargs.get("b", "db8"), 16)
+            c: int = int(kwargs.get("c", "0"), 16)
+            d: int = int(kwargs.get("d", "42"), 16)
+            e: int = int(kwargs.get("e", "0"), 16)
+            f: int = int(kwargs.get("f", "8a2e"), 16)
+            g: int = int(kwargs.get("g", "370"), 16)
+            h: int = int(kwargs.get("h", "1"), 16)
 
             # 计算IPv6地址
-            ipv6 = (xa * 2 ** 112) + (xb * 2 ** 96) + (xc * 2 ** 80) + (xd * 2 ** 64) + \
-                (xe * 2 ** 48) + (xf * 2 ** 32) + \
-                (xg * 2 ** 16) + (xh * 2 ** 0)
+            ipv6 = (a * 2 ** 112) + (b * 2 ** 96) + (c * 2 ** 80) + (d * 2 ** 64) + \
+                (e * 2 ** 48) + (f * 2 ** 32) + \
+                (g * 2 ** 16) + (h * 2 ** 0)
 
             # 根据参数生成对应的IP地址列表并返回
             if v6_exploded:

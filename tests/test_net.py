@@ -20,14 +20,14 @@ def test_generate_ip_list_v6():
     l2 = ['240e:c0a8:1:1:1:1:1:1',
           '240e:c0a8:1:1:1:1:1:2', '240e:c0a8:1:1:1:1:1:3']
     v6 = {
-        "xa": "240e",
-        "xb": "c0a8",
-        "xc": "1",
-        "xd": "1",
-        "xe": "1",
-        "xf": "1",
-        "xg": "1",
-        "xh": "1",
+        "a": "240e",
+        "b": "c0a8",
+        "c": "1",
+        "d": "1",
+        "e": "1",
+        "f": "1",
+        "g": "1",
+        "h": "1",
     }
     assert NetLib.generate_ip_list(3, True) == l1
     assert NetLib.generate_ip_list(3, True, **v6) == l2
