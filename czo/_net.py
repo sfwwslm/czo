@@ -223,15 +223,14 @@ class NetLib:
     @staticmethod
     def ip_in_subnet(ip_str, subnet_str):
         """
-
-        Example:
-        ip = '2a00::110:133'
-        subnet = '2a00::110:0/120'
-
-        if ip_in_subnet(ip, subnet):
-            print(f"{ip} 在子网 {subnet} 内")
-        else:
-            print(f"{ip} 不在子网 {subnet} 内")
+        Examples:
+        >>> ip = '2a00::110:133'
+        >>> subnet = '2a00::110:0/120'
+ 
+        >>> if ip_in_subnet(ip, subnet):
+        ...     print(f"{ip} 在子网 {subnet} 内")
+        >>> else:
+        ...     print(f"{ip} 不在子网 {subnet} 内")
         """
 
         # 将 IP 地址和子网掩码字符串转换为 IPv4Network 对象
@@ -244,17 +243,15 @@ class NetLib:
     @staticmethod
     def ipv6_in_range(ip_str, start_str, end_str):
         """
-        Example:
+        Examples:
+        >>> ip = '2a00::110:133'
+        >>> start = '2a00::110:13'
+        >>> end = '2a00::110:133'
 
-        ip = '2a00::110:133'
-        start = '2a00::110:13'
-        end = '2a00::110:133'
-
-        if ipv6_in_range(ip, start, end):
-            print(f"{ip} 在范围 {start} - {end} 内")
-        else:
-            print(f"{ip} 不在范围 {start} - {end} 内")
-
+        >>> if ipv6_in_range(ip, start, end):
+        ...    print(f"{ip} 在范围 {start} - {end} 内")
+        >>> else:
+        ...    print(f"{ip} 不在范围 {start} - {end} 内")
         """
 
         # 将起始和结束地址字符串转换为 IPv6Address 对象
