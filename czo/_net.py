@@ -11,11 +11,11 @@ class NetLib:
         """
         根据指定的网络和前缀长度计算CIDR信息。
 
-        参数:
+        Args:
         - network: 字符串，指定的网络地址，可以是IPv4或IPv6格式。
         - prefix: 整数，网络的前缀长度。
 
-        返回值:
+        Returns:
         - 字典，包含CIDR信息，包括主机数量、地址范围、网络地址、广播地址和子网掩码。
         - 如果参数无效，返回ValueError异常。
 
@@ -174,8 +174,8 @@ class NetLib:
             "c": 1,
             "d": 1,
         }
-        ...    print((NetLib.generate_ip_list(3, **v4)))
-        
+        >>> print((NetLib.generate_ip_list(3, **v4)))
+
 
         >>> v6 = {
             "xa": "240e",
@@ -187,7 +187,7 @@ class NetLib:
             "xg": "1",
             "xh": "1",
         }
-        ...    print((NetLib.generate_ip_list(3, True, **v6)))
+        >>> print((NetLib.generate_ip_list(3, True, **v6)))
 
         """
         if is_ipv6:
@@ -226,11 +226,12 @@ class NetLib:
         Examples:
         >>> ip = '2a00::110:133'
         >>> subnet = '2a00::110:0/120'
- 
+
         >>> if ip_in_subnet(ip, subnet):
         ...     print(f"{ip} 在子网 {subnet} 内")
-        >>> else:
+        ... else:
         ...     print(f"{ip} 不在子网 {subnet} 内")
+        ...
         """
 
         # 将 IP 地址和子网掩码字符串转换为 IPv4Network 对象
@@ -250,8 +251,9 @@ class NetLib:
 
         >>> if ipv6_in_range(ip, start, end):
         ...    print(f"{ip} 在范围 {start} - {end} 内")
-        >>> else:
+        ... else:
         ...    print(f"{ip} 不在范围 {start} - {end} 内")
+        ...
         """
 
         # 将起始和结束地址字符串转换为 IPv6Address 对象
