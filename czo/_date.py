@@ -319,6 +319,7 @@ class DateLib:
         random_date = datetime.datetime.fromtimestamp(random_timestamp)
         return random_date, random_timestamp
 
+    @staticmethod
     def get_dates_offset_by_days(day: int) -> tuple[str, str]:
         """
         获取当前日期和过去某一天的日期，以字符串格式返回。
