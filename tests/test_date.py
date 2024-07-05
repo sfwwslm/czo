@@ -19,14 +19,14 @@ def test_2():
 
 
 def test_3():
-    assert DateLib.timestamp_to_date(1640995200) == '2022-01-01 00:00:00'
-    assert DateLib.timestamp_to_date(1640995200000) == '2022-01-01 00:00:00'
+    assert DateLib.timestamp_to_date(1640995200) == '2022-01-01 08:00:00'
+    assert DateLib.timestamp_to_date(1640995200000) == '2022-01-01 08:00:00'
 
 
 def test_4():
-    assert DateLib.date_to_timestamp('2022-01-01 00:00:00') == 1640995200
+    assert DateLib.date_to_timestamp('2022-01-01 08:00:00') == 1640995200
     assert DateLib.date_to_timestamp(
-        '2022-01-01 00:00:00', True) == 1640995200000
+        '2022-01-01 08:00:00', True) == 1640995200000
 
 
 def test_5():
