@@ -1,6 +1,7 @@
 import datetime
 import random
 import time
+import warnings
 
 
 class DateLib:
@@ -300,23 +301,45 @@ class DateLib:
             >>> end_date = "2024-06-10 07:08:16"
             >>> random_date, random_timestamp = DateLib.generate_random_date_and_timestamp(start_date, end_date)
             ...
-            >>> start_date = DateLib.date_before_days(30)
-            >>> end_date = DateLib.date_before_days(0)
-
-            >>> random_date, random_timestamp = DateLib.generate_random_date_and_timestamp(start_date, end_date)
+            >>> random_date, random_timestamp = DateLib.generate_random_date_and_timestamp(DateLib.get_dates_offset_by_days(-3))
         """
-        # 将字符串日期转换为 datetime 对象
+
         start = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
         end = datetime.datetime.strptime(end, "%Y-%m-%d %H:%M:%S")
 
-        # 将日期转换为时间戳
+        if start > end:
+            warnings.warn(
+                f"开始时间：{start} 早于结束时间：{end}，已自动交换，这可能不符合预期！", stacklevel=2)
+            start, end = end, start
+
         start_timestamp = int(start.timestamp())
         end_timestamp = int(end.timestamp())
 
-        # 在时间戳范围内生成随机时间戳
         random_timestamp = random.randint(start_timestamp, end_timestamp)
 
         # 将随机时间戳转换回日期
         random_date = datetime.datetime.fromtimestamp(random_timestamp)
-
         return random_date, random_timestamp
+
+    def get_dates_offset_by_days(day: int) -> tuple[str, str]:
+        """
+        获取当前日期和过去某一天的日期，以字符串格式返回。
+
+        Args:
+            day: int - 与当前日期的偏移天数，负数表示过去，正数表示未来。
+
+        Returns:
+            tuple[str, str] - 包含两个日期字符串的元组，第一个是过去某一天的日期，第二个是当前日期。
+
+        Examples:
+            >>> from czo import DateLib
+            >>> print(DateLib.get_dates_offset_by_days(-3))
+            ('2024-07-02 15:12:15', '2024-07-05 15:12:15')
+        """
+        today = datetime.datetime.now()
+        # 创建一个时间偏移量，用于计算过去某一天的日期
+        offset = datetime.timedelta(days=day)
+
+        past = (today + offset).strftime('%Y-%m-%d %H:%M:%S')
+        today = today.strftime('%Y-%m-%d %H:%M:%S')
+        return (past, today)
