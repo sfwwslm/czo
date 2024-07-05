@@ -267,7 +267,7 @@ class NetLib:
         # 示例用法
 
     @staticmethod
-    def mac_generator(number: int, max: int = 10, **kwargs):
+    def mac_generator(number: int, max: int = 10, **kwargs) -> Generator[list, Any, None]:
         """
         生成MAC地址
         """
