@@ -4,6 +4,8 @@ import time
 
 from czo import DateLib
 
+TZ = time.tzname[time.daylight]
+
 
 def test_1():
     assert DateLib.now_date() == datetime.datetime.now().strftime(
@@ -19,14 +21,25 @@ def test_2():
 
 
 def test_3():
-    assert DateLib.timestamp_to_date(1640995200) == '2022-01-01 08:00:00'
-    assert DateLib.timestamp_to_date(1640995200000) == '2022-01-01 08:00:00'
+    if TZ == "CST":
+        assert DateLib.timestamp_to_date(1640995200) == '2022-01-01 08:00:00'
+        assert DateLib.timestamp_to_date(
+            1640995200000) == '2022-01-01 08:00:00'
+    elif TZ == "UTC":
+        assert DateLib.timestamp_to_date(1640995200) == '2022-01-01 00:00:00'
+        assert DateLib.timestamp_to_date(
+            1640995200000) == '2022-01-01 00:00:00'
 
 
 def test_4():
-    assert DateLib.date_to_timestamp('2022-01-01 08:00:00') == 1640995200
-    assert DateLib.date_to_timestamp(
-        '2022-01-01 08:00:00', True) == 1640995200000
+    if TZ == "CST":
+        assert DateLib.date_to_timestamp('2022-01-01 12:00:00') == 1641009600
+        assert DateLib.date_to_timestamp(
+            '2022-01-01 12:00:00', True) == 1641009600000
+    elif TZ == "UTC":
+        assert DateLib.date_to_timestamp('2022-01-01 12:00:00') == 1641038400
+        assert DateLib.date_to_timestamp(
+            '2022-01-01 12:00:00', True) == 1641038400000
 
 
 def test_5():

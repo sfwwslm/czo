@@ -74,8 +74,7 @@ class DateLib:
         """
         if len(str(timestamp)) == 13:
             timestamp = int(timestamp) / 1000.0
-        struct_time = time.localtime(int(timestamp))
-        return time.strftime("%Y-%m-%d %H:%M:%S", struct_time)
+        return datetime.datetime.fromtimestamp(timestamp, datetime.timezone.utc).astimezone().strftime("%Y-%m-%d %H:%M:%S")
 
     @staticmethod
     def date_to_timestamp(date, ms=False) -> int:
@@ -91,14 +90,13 @@ class DateLib:
 
         Examples:
             >>> date_to_timestamp("2022-01-01 12:00:00")
-            1640995200
+            1641009600
             >>> date_to_timestamp("2022-01-01 12:00:00", ms=True)
-            1640995200000
+            1641009600000
         """
-        struct_time = time.strptime(date, "%Y-%m-%d %H:%M:%S")
         if ms:
-            return int(time.mktime(struct_time)) * 1000
-        return int(time.mktime(struct_time))
+            return int(datetime.datetime.fromisoformat(date).astimezone().timestamp()) * 1000
+        return int(datetime.datetime.fromisoformat(date).astimezone().timestamp())
 
     @staticmethod
     def yesterday_zero_point_timestamp(day=1, ms=False) -> int:
