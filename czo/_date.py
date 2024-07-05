@@ -295,9 +295,15 @@ class DateLib:
             random_timestamp -- 随机日期对应的时间戳，int 类型。
 
         Examples:
+
             >>> start_date = "2024-01-10 07:08:16"
             >>> end_date = "2024-06-10 07:08:16"
-            >>> random_date, random_timestamp = random_date(start_date, end_date)
+            >>> random_date, random_timestamp = DateLib.generate_random_date_and_timestamp(start_date, end_date)
+            ...
+            >>> start_date = DateLib.date_before_days(30)
+            >>> end_date = DateLib.date_before_days(0)
+
+            >>> random_date, random_timestamp = DateLib.generate_random_date_and_timestamp(start_date, end_date)
         """
         # 将字符串日期转换为 datetime 对象
         start = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
