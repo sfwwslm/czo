@@ -299,7 +299,7 @@ class DateLib:
             >>> end_date = "2024-06-10 07:08:16"
             >>> random_date, random_timestamp = DateLib.generate_random_date_and_timestamp(start_date, end_date)
             ...
-            >>> random_date, random_timestamp = DateLib.generate_random_date_and_timestamp(DateLib.get_dates_offset_by_days(-3))
+            >>> random_date, random_timestamp = DateLib.generate_random_date_and_timestamp(*DateLib.get_dates_offset_by_days(-3))
         """
 
         start = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
