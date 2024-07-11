@@ -290,3 +290,18 @@ class Faker(Singleton):
         if en:
             return random.choice(en_country)
         return random.choice(zh_country)
+
+    @property
+    def industry(self) -> str:
+        """行业"""
+        industry_list: list[str] = [
+            "金融",
+            "教育",
+            "通信",
+            "信息安全",
+            "物流",
+            "能源",
+            "医疗",
+            "军工",
+        ]
+        return random.choice(industry_list)
