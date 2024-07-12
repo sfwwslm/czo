@@ -320,12 +320,13 @@ class DateLib:
         return random_date, random_timestamp
 
     @staticmethod
-    def get_dates_offset_by_days(day: int) -> tuple[str, str]:
+    def get_dates_offset_by_days(day: int, now: str | datetime.datetime | None = None) -> tuple[str, str]:
         """
         获取当前日期和过去某一天的日期，以字符串格式返回。
 
         Args:
             day: int - 与当前日期的偏移天数，负数表示过去，正数表示未来。
+            now: str | datetime.datetime | None - 默认为None，可以设置一个日期表示当前日期，来计算偏移量。
 
         Returns:
             tuple[str, str] - 包含两个日期字符串的元组，第一个是过去某一天的日期，第二个是当前日期。
@@ -334,8 +335,17 @@ class DateLib:
             >>> from czo import DateLib
             >>> print(DateLib.get_dates_offset_by_days(-3))
             ('2024-07-02 15:12:15', '2024-07-05 15:12:15')
+            >>>
+            >>> print(DateLib.get_dates_offset_by_days(-3, "2024-06-8 07:08:16"))
+            ('2024-06-05 07:08:16', '2024-06-08 07:08:16')
         """
-        today = datetime.datetime.now()
+        if isinstance(now, str):
+            today = datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S")
+        elif isinstance(now, datetime.datetime):
+            today = now
+        else:
+            today = datetime.datetime.now()
+
         # 创建一个时间偏移量，用于计算过去某一天的日期
         offset = datetime.timedelta(days=day)
 
