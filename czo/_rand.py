@@ -82,10 +82,8 @@ class Random:
                 result += char
             return result
 
-
         if is_zh:
             return Unicode()
-
 
         if is_int:
             return ''.join(str(secrets.randbelow(10)) for _ in range(length))
@@ -133,39 +131,14 @@ class Random:
         return hash[:len]
 
     @staticmethod
-    def ipv4():
-        """
-        生成一个随机的IPv4地址。
-
-        Returns:
-        - IPv4Address: 一个随机生成的IPv4地址。
-        """
-        warnings.warn(f"`{Random.ipv4.__name__}`已弃用即将删除，改用`Random.ip`",
-                      DeprecationWarning, stacklevel=2)
-        return ipaddress.IPv4Address(random.randint(0, 2**32-1)).__str__()
-
-    @staticmethod
-    def ipv6():
-        """
-        生成一个随机的IPv6地址。
-
-        Returns:
-        - IPv6Address: 返回一个随机生成的IPv6地址。
-        """
-
-        warnings.warn(f"`{Random.ipv6.__name__}`已弃用即将删除，改用`Random.ip`",
-                      DeprecationWarning, stacklevel=2)
-        return ipaddress.IPv6Address(random.randint(0, 2**128-1)).__str__()
-
-    @staticmethod
     def ip(is_ipv6: bool = False) -> str:
         """
         生成一个随机的IP地址。
         """
         if is_ipv6:
-            return ipaddress.IPv6Address(random.randint(0, 2**128-1)).__str__()
+            return ipaddress.IPv6Address(random.randint(0, 2**128-1)).compressed
         else:
-            return ipaddress.IPv4Address(random.randint(0, 2**32-1)).__str__()
+            return ipaddress.IPv4Address(random.randint(0, 2**32-1)).compressed
 
     @staticmethod
     def ip_suffix_is_0(is_ipv6: bool = False, suffix: str = 0) -> str:
