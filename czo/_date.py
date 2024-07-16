@@ -281,13 +281,13 @@ class DateLib:
         return time.strftime(fmt, time.localtime(int(time.time())))
 
     @staticmethod
-    def generate_random_date_and_timestamp(start: str, end: str) -> tuple[datetime.datetime, int]:
+    def generate_random_date_and_timestamp(start: datetime.datetime | str, end: datetime.datetime | str) -> tuple[datetime.datetime, int]:
         """
         生成指定范围内的随机日期和时间戳。
 
         Args:
-            start -- 字符串格式起始日期。
-            end -- 字符串格式结束日期。
+            start -- 字符串或datetime.datetime对象格式起始日期。
+            end -- 字符串或datetime.datetime对象格式结束日期。
 
         Returns:
             random_date -- 随机日期，datetime.datetime 对象。
@@ -302,8 +302,9 @@ class DateLib:
             >>> random_date, random_timestamp = DateLib.generate_random_date_and_timestamp(*DateLib.get_dates_offset_by_days(-3))
         """
 
-        start = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
-        end = datetime.datetime.strptime(end, "%Y-%m-%d %H:%M:%S")
+        if isinstance(start, str) and isinstance(end, str):
+            start = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
+            end = datetime.datetime.strptime(end, "%Y-%m-%d %H:%M:%S")
 
         if start > end:
             warnings.warn(
@@ -316,7 +317,8 @@ class DateLib:
         random_timestamp = random.randint(start_timestamp, end_timestamp)
 
         # 将随机时间戳转换回日期
-        random_date = datetime.datetime.fromtimestamp(random_timestamp)
+        random_date = datetime.datetime.fromtimestamp(
+            random_timestamp).astimezone()
         return random_date, random_timestamp
 
     @staticmethod
