@@ -1,12 +1,21 @@
 import datetime
 import random
 import string
+import warnings
 
-from .utils import Singleton
+from .utils import Singleton, get_methods_and_properties_with_docs
 
 
 class Faker(Singleton):
     """伪造常用数据"""
+
+    def __init__(self):
+        warnings.warn(
+            "Faker 即将弃用删除，改用 Person", DeprecationWarning, stacklevel=2)
+
+    def help(self):
+        """功能介绍"""
+        get_methods_and_properties_with_docs(self.__class__)
 
     @property
     def __areaCodeDict(self) -> dict:
