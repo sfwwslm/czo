@@ -3,11 +3,18 @@ import random
 import time
 import warnings
 
+from .utils import get_methods_and_properties_with_docs
+
 
 class DateLib:
     """
     提供了一组静态方法，用于处理日期和时间的常见操作。
     """
+
+    @classmethod
+    def help(cls):
+        """功能介绍"""
+        get_methods_and_properties_with_docs(cls)
 
     @staticmethod
     def timestamp() -> int:

@@ -3,11 +3,17 @@ import shutil
 import sys
 from pathlib import Path
 
+from .utils import get_methods_and_properties_with_docs
+
 
 class PathLib:
     """
     处理文件相关的功能
     """
+    @classmethod
+    def help(cls):
+        """功能介绍"""
+        get_methods_and_properties_with_docs(cls)
 
     @staticmethod
     def clear_directory(path):
@@ -174,8 +180,7 @@ class PathLib:
 
     @staticmethod
     def is_none_then_mkdir(path: str | Path) -> Path:
-        """
-        如果指定的路径不存在，则创建该路径及其所有父路径。
+        """如果指定的路径不存在，则创建该路径及其所有父路径。
 
         参数:
         - path: 字符串或Path类型，表示需要检查和可能创建的路径。
@@ -202,6 +207,11 @@ class DirLib:
         # 使用 exists() 方法检查目录是否存在,不存在时新建
         if not self.directory.exists():
             self.directory.mkdir(parents=True)
+
+    @classmethod
+    def help(cls):
+        """功能介绍"""
+        get_methods_and_properties_with_docs(cls)
 
     @property
     def is_directory_empty(self) -> bool:

@@ -3,8 +3,14 @@ from ipaddress import IPv4Address, IPv6Address
 from time import sleep
 from typing import Any, Generator
 
+from .utils import get_methods_and_properties_with_docs
+
 
 class NetLib:
+    @classmethod
+    def help(cls):
+        """功能介绍"""
+        get_methods_and_properties_with_docs(cls)
 
     @staticmethod
     def cidr(address: str, netmask_or_prefix: int | str) -> dict[str, Any] | ValueError:
@@ -222,7 +228,8 @@ class NetLib:
 
     @staticmethod
     def ip_in_subnet(ip_str, subnet_str):
-        """
+        """检查ip地址是否在指定的子网内。
+
         Examples:
         >>> ip = '2a00::110:133'
         >>> subnet = '2a00::110:0/120'
@@ -243,7 +250,8 @@ class NetLib:
 
     @staticmethod
     def ipv6_in_range(ip_str, start_str, end_str):
-        """
+        """检查ipv6地址是否在指定的范围内。
+
         Examples:
         >>> ip = '2a00::110:133'
         >>> start = '2a00::110:13'
