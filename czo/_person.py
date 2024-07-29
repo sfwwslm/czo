@@ -69,21 +69,6 @@ class Person:
 
         return id_card, gender, age, area_name
 
-    def profile(self) -> dict:
-        """包含随机生成的个人信息的字典，例如姓名、性别、年龄、职业等。"""
-
-        id_card, gender, age, area_code_name = self.__id_sex_age_area()
-
-        return {
-            '姓名': self.full_name(), '性别': gender, '年龄': age, '职业': self.occupation(),
-            '民族': self.ethnicity(), '学校': self.school(), '宗教信仰': self.religion(),
-            '手机号': self.phone_number(), '座机号': self.landline_number(),
-            '地址': f"{area_code_name}{self.residence()}", '小区': self.residence(), '身份证号': id_card, 'MAC': self.mac_address(),
-            '护照号': self.passport_number(), '纬度': self.latitude(), '经度': self.longitude(),
-            '国家': self.country(), '婚姻状态': self.marital_status(),
-            '证件类型': self.id_type(), '学历': self.education()
-        }
-
     def education(self) -> str:
         """学历、教育经历"""
         return random.choice(["小学", "初中", "高中", "中专", "大专", "本科", "硕士", "研究生", "博士"])
@@ -92,7 +77,7 @@ class Person:
         """证件类型"""
         return random.choice(["身份证", "居民身份证", "士官证", "军官证", "学生证", "驾驶证", "驾照", "护照", "港澳通行证", "营业执照", "组织机构代码证", "台胞证", "文职干部证", "部队离退休证", "香港特区护照/身份证明", "澳门特区护照/身份证明", "台湾居民来往大陆通行证", "境外永久居住证", "户口薄"])
 
-    def marital_status(self) -> str:
+    def marital(self) -> str:
         """婚姻状态"""
         return random.choice(["未婚", "已婚", "离婚", "丧偶", "离异"])
 
@@ -164,7 +149,7 @@ class Person:
     def occupation(self) -> str:
         """职业"""
         return random.choice(['教师', '工人', '记者', '演员', '作曲家', '架构师', '营养师', '鼓手', '厨师',
-                              '医生', '护士', '司机', '军人', '律师', '商人', '会 计', '店员', '出纳员',
+                              '医生', '护士', '司机', '军人', '律师', '商人', '会计', '店员', '出纳员',
                               '作家', '导游', '警察', '歌手', '画家', '裁缝', '翻译官', '法官', '保安',
                               '花匠', '服务员', '清洁工', '建筑师', '理发师', '采购员', '消防员', '机修工',
                               '推销员', '魔术师', '模特', '邮递员', '售货员', '救生员', '运动员', '工程师',
@@ -247,7 +232,7 @@ class Person:
             "金融", "教育", "通信", "信息安全", "物流", "能源", "医疗", "军工"
         ])
 
-    def license_plate(self, symbol: str = '· ', battery: bool = False) -> str:
+    def license_plate(self, battery: bool = False, symbol: str = '· ') -> str:
         """车牌号"""
         provinces_abbreviations: list[str] = [
             '京', '津', '沪', '渝', '冀', '晋', '蒙', '辽', '吉', '黑',
@@ -262,8 +247,74 @@ class Person:
             (string.digits+ascii_uppercase), k=5))
 
         if battery:
+            license_plate: str = "".join(random.choices(
+                (string.digits), k=5))
             battery_symbol: str = random.choice(
                 'DF')  # D代表纯电动新能源汽车，F代表非纯电动新能源汽车。
             return f"{province_letter}{letter_part}{symbol}{battery_symbol}{license_plate}"
 
         return f"{province_letter}{letter_part}{symbol}{license_plate }"
+
+    def email(self, prefix=None):
+        """邮箱"""
+        email_suffix = [
+            "@gmail.com", "@qq.com", "@163.com", "@sina.com", "@163.com", "@outlook.com", "@hotmail.com", "@yahoo.com", "@yahoo.co.uk", "@yahoo.ca", "@yahoo.fr", "@yahoo.de", "@yahoo.it", "@yahoo.es"
+        ]
+        if prefix is None:
+            prefix = "".join(random.choices(string.ascii_lowercase, k=5))
+        return f"{prefix}{random.choice(email_suffix)}"
+
+    def profile(self, zh: bool = False) -> dict:
+        """包含随机生成的个人信息的字典，例如姓名、性别、年龄、职业等。"""
+
+        _id_card, _sex, _age, area_code_name = self.__id_sex_age_area()
+
+        labels = {
+            'name': '姓名' if zh else 'Name',
+            'sex': '性别' if zh else 'Sex',
+            'age': '年龄' if zh else 'Age',
+            'occupation': '职业' if zh else 'Occupation',
+            'ethnicity': '民族' if zh else 'Ethnicity',
+            'school': '学校' if zh else 'School',
+            'religion': '宗教信仰' if zh else 'Religion',
+            'phone_number': '手机号' if zh else 'Phone Number',
+            'landline_number': '座机号' if zh else 'Landline Number',
+            'address': '地址' if zh else 'Address',
+            'residence': '居住地' if zh else 'Residence',
+            'id_card': '身份证' if zh else 'ID Card',
+            'mac': 'MAC',
+            'passport_number': '护照号' if zh else 'Passport Number',
+            'latitude': '经度' if zh else 'Longitude',
+            'longitude': '纬度' if zh else 'Latitude',
+            'country': '国家' if zh else 'Country',
+            'marital': '婚姻状况' if zh else 'Marital',
+            'email': '邮箱' if zh else 'Email',
+            'id_type': '证件类型' if zh else 'ID Type',
+            'education': '学历' if zh else 'Education',
+            'license_plate': '车牌号' if zh else 'License Plate',
+        }
+
+        return {
+            labels['name']: self.full_name(),
+            labels['sex']: _sex,
+            labels['age']: _age,
+            labels['occupation']: self.occupation(),
+            labels['ethnicity']: self.ethnicity(),
+            labels['school']: self.school(),
+            labels['religion']: self.religion(),
+            labels['phone_number']: self.phone_number(),
+            labels['landline_number']: self.landline_number(),
+            labels['address']: f"{area_code_name}{self.residence()}",
+            labels['residence']: self.residence(),
+            labels['id_card']: _id_card,
+            labels['mac']: self.mac_address(),
+            labels['passport_number']: self.passport_number(),
+            labels['latitude']: self.latitude(),
+            labels['longitude']: self.longitude(),
+            labels['country']: self.country(),
+            labels['marital']: self.marital(),
+            labels['email']: self.email(),
+            labels['id_type']: self.id_type(),
+            labels['education']: self.education(),
+            labels['license_plate']: self.license_plate()
+        }
