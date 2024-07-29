@@ -7,11 +7,11 @@ from .utils import Singleton, get_methods_and_properties_with_docs
 
 
 class Faker(Singleton):
-    """伪造常用数据"""
+    """伪造常用数据，计划在0.1.20删除"""
 
     def __init__(self):
         warnings.warn(
-            "Faker 即将弃用删除，改用 Person", DeprecationWarning, stacklevel=2)
+            "Faker 即将弃用删除，计划在0.1.20删除。改用 Person", DeprecationWarning, stacklevel=2)
 
     def help(self):
         """功能介绍"""
