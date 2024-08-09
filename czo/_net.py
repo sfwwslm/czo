@@ -160,70 +160,39 @@ class NetLib:
                     yield ip_list
 
     @staticmethod
-    def generate_ip_list(number: int, is_ipv6: bool = False, v6_exploded: bool = False, **kwargs) -> list[str]:
+    def generate_ip_list(number: int, *, is_ipv6: bool = False, ip_str: str | None = None, v6_exploded: bool = False) -> list[str]:
         """
         生成指定数量的IP地址字符串列表。
 
         Args:
         - number: 生成IP地址的数量。
         - is_ipv6: 指示是否生成IPv6地址。
+        - ip_str: 指定IP地址字符串，如果提供了该参数，则使用该字符串作为起始IP地址。
         - v6_exploded: 指示生成的IPv6地址是否以展开格式表示。
-        - kwargs: 可以提供额外的参数来定制IPv4或IPv6地址的起始值。
 
         Returns:
         - 一个包含生成的IP地址字符串的列表。
 
         Examples:
-        >>> v4 = {
-            "a": 192,
-            "b": 168,
-            "c": 1,
-            "d": 1,
-        }
-        >>> print((NetLib.generate_ip_list(3, **v4)))
+        >>> print(NetLib.generate_ip_list(3, ip_str="192.168.1.1"))
 
-
-        >>> v6 = {
-            "a": "240e",
-            "b": "c0a8",
-            "c": "1",
-            "d": "1",
-            "e": "1",
-            "f": "1",
-            "g": "1",
-            "h": "1",
-        }
-        >>> print((NetLib.generate_ip_list(3, True, **v6)))
+        >>> print(NetLib.generate_ip_list(3, is_ipv6=True, ip_str="2001:db8::1"))
 
         """
         if is_ipv6:
-            # 初始化IPv6的各个段的默认值
-            a: int = int(kwargs.get("a", "2001"), 16)
-            b: int = int(kwargs.get("b", "db8"), 16)
-            c: int = int(kwargs.get("c", "0"), 16)
-            d: int = int(kwargs.get("d", "42"), 16)
-            e: int = int(kwargs.get("e", "0"), 16)
-            f: int = int(kwargs.get("f", "8a2e"), 16)
-            g: int = int(kwargs.get("g", "370"), 16)
-            h: int = int(kwargs.get("h", "1"), 16)
+            if ip_str is None:
+                ipv6 = int(ipaddress.ip_address("2001:db8:0:42:0:8a2e:370:1"))
+            else:
+                ipv6 = int(ipaddress.ip_address(ip_str))
 
-            # 计算IPv6地址
-            ipv6 = (a * 2 ** 112) + (b * 2 ** 96) + (c * 2 ** 80) + (d * 2 ** 64) + \
-                (e * 2 ** 48) + (f * 2 ** 32) + \
-                (g * 2 ** 16) + (h * 2 ** 0)
-
-            # 根据参数生成对应的IP地址列表并返回
             if v6_exploded:
                 return [ipaddress.IPv6Address(ipv6 + i).exploded for i in range(number)]
             return [ipaddress.IPv6Address(ipv6 + i).compressed for i in range(number)]
 
-        # 初始化IPv4的各个字节的默认值
-        a: int = kwargs.get("a", 1)
-        b: int = kwargs.get("b", 0)
-        c: int = kwargs.get("c", 0)
-        d: int = kwargs.get("d", 1)
-        # 计算IPv4地址
-        ipv4 = (a * 2 ** 24) + (b * 2 ** 16) + (c * 2 ** 8) + (d * 2 ** 0)
+        if ip_str is None:
+            ipv4 = int(ipaddress.ip_address("1.0.0.1"))
+        else:
+            ipv4 = int(ipaddress.ip_address(ip_str))
         return [ipaddress.IPv4Address(ipv4 + i).compressed for i in range(number)]
 
     @staticmethod
