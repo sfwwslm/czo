@@ -22,6 +22,9 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+[project.optional-dependencies]
+dev = ["build", "twine"]
+
 [project.urls]
 Homepage = "https://github.com/sfwwslm/czo"
 Issues = "https://github.com/sfwwslm/czo/issues"
