@@ -10,6 +10,7 @@ class PathLib:
     """
     处理文件相关的功能
     """
+
     @classmethod
     def help(cls):
         """功能介绍"""
@@ -87,8 +88,11 @@ class PathLib:
             >>> del_key_file('C:/Users/user/Documents', 'example')
             >>> del_key_file('C:/Users/user/Documents', 'example', confirm=True)
         """
-        file_list = [os.path.join(dirname, filename) for dirname, subdir, filenames in
-                     os.walk(path) for filename in filenames]
+        file_list = [
+            os.path.join(dirname, filename)
+            for dirname, subdir, filenames in os.walk(path)
+            for filename in filenames
+        ]
 
         for target_file in file_list:
             if keywords in target_file:
@@ -103,7 +107,9 @@ class PathLib:
         替换文件名中的指定字符串。
 
         该函数遍历指定路径下的所有文件，如果文件名包含旧字符串，
+
         则将其替换为新字符串，并执行重命名操作。如果confirm参数为False，
+
         则不会真的重命名文件，只会打印出将要执行的操作。
 
         Args:
@@ -114,7 +120,7 @@ class PathLib:
 
         Examples:
             >>> rename_files('C:/Users/user/Documents', 'example', 'test')
-            >>> rename_files('C:/Users/user/Documents', 'example', 'test', confirm=True) 
+            >>> rename_files('C:/Users/user/Documents', 'example', 'test', confirm=True)
         """
 
         for dirname, subdir, filenames in os.walk(path):
@@ -128,9 +134,9 @@ class PathLib:
                         os.rename(old_file_path, new_file_path)
                     else:
                         s_len = len(old_file_path.encode("gbk"))
-                        print("*"*s_len)
+                        print("*" * s_len)
                         print(f"{old_file_path}\n{new_file_path}")
-                        print("*"*s_len)
+                        print("*" * s_len)
 
     @staticmethod
     def del_key_row(file: str, key: str) -> None:
@@ -139,13 +145,13 @@ class PathLib:
 
         Args:
             file : str
-            key : str 
+            key : str
         """
-        with open(file, 'r', encoding='utf8') as f:
+        with open(file, "r", encoding="utf8") as f:
             lines: list[str] = f.readlines()
-        with open(file, 'w', encoding='utf8') as f:
+        with open(file, "w", encoding="utf8") as f:
             for line in lines:
-                if line.strip('\n') != key:
+                if line.strip("\n") != key:
                     f.write(line)
 
     @staticmethod
@@ -176,7 +182,7 @@ class PathLib:
         根据项目名称获取项目根目录绝对路径
         """
         curPath: str = os.path.abspath(os.path.dirname(__file__))
-        return curPath[:curPath.find(project_name) + len(project_name)]
+        return curPath[: curPath.find(project_name) + len(project_name)]
 
     @staticmethod
     def is_none_then_mkdir(path: str | Path) -> Path:
@@ -195,6 +201,65 @@ class PathLib:
         if not path.exists():
             path.mkdir(parents=True)  # 如果路径不存在，则创建该路径及其所有父路径
         return path
+
+    @staticmethod
+    def move_videos_to_root(
+        root_path, use_parent_dir_as_prefix=False, remove_empty_dirs=True
+    ):
+        """把源目录的子目录中的视频文件移动到源目录下
+
+        参数:
+
+        - use_parent_dir_as_prefix：设置为 True 时使用上一级目录名作为文件名前缀；设置为 False 时保持原文件名。
+
+        - remove_empty_dirs：设置为 True 时，移动完文件后删除原目录（前提是目录为空）；设置为 False 时不删除目录。
+        """
+
+        # 定义视频文件格式
+        video_extensions = {".mp4", ".mkv", ".avi", ".mov", ".flv", ".wmv", ".webm"}
+        moved_files_count = 0  # 初始化移动文件计数器
+
+        # 遍历指定目录及其子目录
+        for dirpath, _, filenames in os.walk(root_path, topdown=False):
+            for filename in filenames:
+                # 检查文件扩展名是否在视频格式列表中
+                if any(filename.lower().endswith(ext) for ext in video_extensions):
+                    source_path = os.path.join(dirpath, filename)
+
+                    # 如果文件已经在根目录中，则跳过
+                    if dirpath == root_path:
+                        continue
+
+                    # 使用上一级目录名作为文件名前缀（根据可选参数）
+                    if use_parent_dir_as_prefix:
+                        parent_dir_name = os.path.basename(os.path.dirname(source_path))
+                        new_filename = f"{parent_dir_name}_{filename}"
+                    else:
+                        new_filename = filename
+
+                    destination_path = os.path.join(root_path, new_filename)
+
+                    # 若文件名冲突，则自动重命名
+                    if os.path.exists(destination_path):
+                        base, ext = os.path.splitext(new_filename)
+                        count = 1
+                        while os.path.exists(destination_path):
+                            destination_path = os.path.join(
+                                root_path, f"{base}_{count}{ext}"
+                            )
+                            count += 1
+
+                    # 移动文件到目标目录
+                    shutil.move(source_path, destination_path)
+                    moved_files_count += 1  # 计数移动的文件
+                    print(f"Moved: {source_path} -> {destination_path}")
+
+            # 删除空目录（根据可选参数）
+            if remove_empty_dirs and dirpath != root_path and not os.listdir(dirpath):
+                os.rmdir(dirpath)
+                print(f"Removed empty directory: {dirpath}")
+
+        print(f"Total files moved: {moved_files_count}")
 
 
 class DirLib:
