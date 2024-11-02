@@ -242,7 +242,7 @@ zh_country = [
     "西撒哈拉",
     "也门",
     "赞比亚",
-    "津巴布韦"
+    "津巴布韦",
 ]
 
 pinyin_country = [
@@ -489,7 +489,7 @@ pinyin_country = [
     "Xīsāhālā",
     "Yěmén",
     "Zànbǐyà",
-    "Jīnbābùwéi"
+    "Jīnbābùwéi",
 ]
 
 en_country = [
@@ -736,5 +736,5 @@ en_country = [
     "Western Sahara",
     "Yemen",
     "Zambia",
-    "Zimbabwe"
+    "Zimbabwe",
 ]

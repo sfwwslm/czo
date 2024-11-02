@@ -12,7 +12,7 @@ def count_chr_length(text, no_ascii=2) -> int:
     """
     length = 0
     for c in text:
-        if unicodedata.east_asian_width(c) in ['F', 'W']:
+        if unicodedata.east_asian_width(c) in ["F", "W"]:
             length += no_ascii  # 全角宽度字符
         else:
             length += 1  # 半角宽度字符
@@ -26,7 +26,7 @@ def get_methods_and_properties_with_docs(cls):
     # 获取类的文档注释
     class_doc: str | None = inspect.getdoc(cls)
     if class_doc is not None:
-        methods_and_properties["__class__"] = f"C: {class_doc}".split('\n')[0]
+        methods_and_properties["__class__"] = f"C: {class_doc}".split("\n")[0]
 
     # 获取类的所有成员（包括方法和属性）
     for name, member in inspect.getmembers(cls):
@@ -40,8 +40,11 @@ def get_methods_and_properties_with_docs(cls):
             prefix = "M: "
 
         # 提取文档注释的第一行，并为功能加上标签
-        methods_and_properties[name] = f"{prefix}{inspect.getdoc(member)}".split(
-            "\n")[0] if name != 'help' else f"{prefix}可以方便地获取{cls.__name__}类的所有公共方法和属性，并以一种格式化的方式输出它们的名称和文档注释。"
+        methods_and_properties[name] = (
+            f"{prefix}{inspect.getdoc(member)}".split("\n")[0]
+            if name != "help"
+            else f"{prefix}可以方便地获取{cls.__name__}类的所有公共方法和属性，并以一种格式化的方式输出它们的名称和文档注释。"
+        )
 
     max_doc_length: int = 0
     max_method_length: int = 0
@@ -71,9 +74,9 @@ def get_methods_and_properties_with_docs(cls):
         while count_chr_length(info) < max_length:
             info += " "
         # 始终在最后输出帮助方法
-        if method == 'help':
-            help_print = info+' |'
+        if method == "help":
+            help_print = info + " |"
             continue
-        print(info+' |')
+        print(info + " |")
     print(help_print)
     print(f" {'-'*max_length}")

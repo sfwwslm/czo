@@ -81,7 +81,11 @@ class DateLib:
         """
         if len(str(timestamp)) == 13:
             timestamp = int(timestamp) / 1000.0
-        return datetime.datetime.fromtimestamp(timestamp, datetime.timezone.utc).astimezone().strftime("%Y-%m-%d %H:%M:%S")
+        return (
+            datetime.datetime.fromtimestamp(timestamp, datetime.timezone.utc)
+            .astimezone()
+            .strftime("%Y-%m-%d %H:%M:%S")
+        )
 
     @staticmethod
     def date_to_timestamp(date, ms=False) -> int:
@@ -102,7 +106,10 @@ class DateLib:
             1641009600000
         """
         if ms:
-            return int(datetime.datetime.fromisoformat(date).astimezone().timestamp()) * 1000
+            return (
+                int(datetime.datetime.fromisoformat(date).astimezone().timestamp())
+                * 1000
+            )
         return int(datetime.datetime.fromisoformat(date).astimezone().timestamp())
 
     @staticmethod
@@ -125,8 +132,8 @@ class DateLib:
         """
         yesterday = datetime.date.today() - datetime.timedelta(days=day)
         if ms:
-            return int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d'))) * 1000
-        return int(time.mktime(time.strptime(str(yesterday), '%Y-%m-%d')))
+            return int(time.mktime(time.strptime(str(yesterday), "%Y-%m-%d"))) * 1000
+        return int(time.mktime(time.strptime(str(yesterday), "%Y-%m-%d")))
 
     @staticmethod
     def difference_time_two(date1: str, date2: str, reversal: bool = False) -> float:
@@ -168,7 +175,7 @@ class DateLib:
         """
         now_time = datetime.datetime.now()
         now_time = now_time - datetime.timedelta(minutes=int(value))
-        return now_time.strftime('%Y-%m-%d %H:%M:%S')
+        return now_time.strftime("%Y-%m-%d %H:%M:%S")
 
     @staticmethod
     def date_before_hours(value) -> str:
@@ -187,7 +194,7 @@ class DateLib:
         """
         now_time = datetime.datetime.now()
         now_time = now_time - datetime.timedelta(hours=int(value))
-        return now_time.strftime('%Y-%m-%d %H:%M:%S')
+        return now_time.strftime("%Y-%m-%d %H:%M:%S")
 
     @staticmethod
     def date_before_days(day: int) -> str:
@@ -206,7 +213,7 @@ class DateLib:
         """
         today = datetime.datetime.now()
         offset = datetime.timedelta(days=-day)
-        return (today + offset).strftime('%Y-%m-%d %H:%M:%S')
+        return (today + offset).strftime("%Y-%m-%d %H:%M:%S")
 
     @staticmethod
     def time_handler(date_str: str) -> str:
@@ -243,8 +250,7 @@ class DateLib:
             '2022-01-01 20:00:00'
         """
         # 解析字符串为 datetime 对象
-        parsed_date = datetime.datetime.strptime(
-            date_str, "%a, %d %b %Y %H:%M:%S %Z")
+        parsed_date = datetime.datetime.strptime(date_str, "%a, %d %b %Y %H:%M:%S %Z")
         parsed_date = parsed_date + datetime.timedelta(hours=8)
         # 格式化为想要的时间格式
         return parsed_date.strftime("%Y-%m-%d %H:%M:%S")
@@ -265,8 +271,7 @@ class DateLib:
         # 获取当天开始时间（即 00:00:00）
         start_of_day = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
         # 获取当天结束时间（即 23:59:59）
-        end_of_day = datetime.datetime(
-            now.year, now.month, now.day, 23, 59, 59)
+        end_of_day = datetime.datetime(now.year, now.month, now.day, 23, 59, 59)
         if timestamp:
             return int(start_of_day.timestamp()), int(end_of_day.timestamp())
         return str(start_of_day), str(end_of_day)
@@ -288,7 +293,9 @@ class DateLib:
         return time.strftime(fmt, time.localtime(int(time.time())))
 
     @staticmethod
-    def generate_random_date_and_timestamp(start: datetime.datetime | str, end: datetime.datetime | str) -> tuple[datetime.datetime, int]:
+    def generate_random_date_and_timestamp(
+        start: datetime.datetime | str, end: datetime.datetime | str
+    ) -> tuple[datetime.datetime, int]:
         """
         生成指定范围内的随机日期和时间戳。
 
@@ -315,7 +322,9 @@ class DateLib:
 
         if start > end:
             warnings.warn(
-                f"开始时间：{start} 早于结束时间：{end}，已自动交换，这可能不符合预期！", stacklevel=2)
+                f"开始时间：{start} 早于结束时间：{end}，已自动交换，这可能不符合预期！",
+                stacklevel=2,
+            )
             start, end = end, start
 
         start_timestamp = int(start.timestamp())
@@ -324,12 +333,13 @@ class DateLib:
         random_timestamp = random.randint(start_timestamp, end_timestamp)
 
         # 将随机时间戳转换回日期
-        random_date = datetime.datetime.fromtimestamp(
-            random_timestamp).astimezone()
+        random_date = datetime.datetime.fromtimestamp(random_timestamp).astimezone()
         return random_date, random_timestamp
 
     @staticmethod
-    def get_dates_offset_by_days(day: int, now: str | datetime.datetime | None = None) -> tuple[str, str]:
+    def get_dates_offset_by_days(
+        day: int, now: str | datetime.datetime | None = None
+    ) -> tuple[str, str]:
         """
         获取当前日期和过去某一天的日期，以字符串格式返回。
 
@@ -358,6 +368,6 @@ class DateLib:
         # 创建一个时间偏移量，用于计算过去某一天的日期
         offset = datetime.timedelta(days=day)
 
-        past = (today + offset).strftime('%Y-%m-%d %H:%M:%S')
-        today = today.strftime('%Y-%m-%d %H:%M:%S')
+        past = (today + offset).strftime("%Y-%m-%d %H:%M:%S")
+        today = today.strftime("%Y-%m-%d %H:%M:%S")
         return (past, today)

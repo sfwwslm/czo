@@ -48,24 +48,25 @@ class Random:
             ```
         """
 
-        rand_str: list[str] = random.sample(
-            string.ascii_letters + string.digits, 20)
-        random_value: str = ''.join(rand_str) + '\n' + str(uuid.uuid4())
+        rand_str: list[str] = random.sample(string.ascii_letters + string.digits, 20)
+        random_value: str = "".join(rand_str) + "\n" + str(uuid.uuid4())
 
-        temp_name = f'.{Random.random_hash()}'
-        with open(temp_name, 'w') as w:
+        temp_name = f".{Random.random_hash()}"
+        with open(temp_name, "w") as w:
             if data is not None:
                 w.write(f"{data}\n{random_value}")
             else:
                 w.write(f"{random_value}")
-        with open(temp_name, 'rb') as r:
+        with open(temp_name, "rb") as r:
             md5: str = hashlib.md5(r.read()).hexdigest()
-        temp_path: str = f'./{md5}'
+        temp_path: str = f"./{md5}"
         shutil.move(temp_name, temp_path)
         return temp_path, md5
 
     @staticmethod
-    def str(length: int = 1, is_zh: bool = False, mark: bool = False, is_int: bool = False) -> str:
+    def str(
+        length: int = 1, is_zh: bool = False, mark: bool = False, is_int: bool = False
+    ) -> str:
         """
         生成指定长度的随机大小写字母、数字组成的字符串。
 
@@ -79,12 +80,12 @@ class Random:
             str: 生成的随机字符串。
 
         Examples:
-        >>> print(Random.str(1))   
+        >>> print(Random.str(1))
 
         """
 
         def Unicode() -> str:
-            result: Literal[''] = ""
+            result: Literal[""] = ""
             for _ in range(length):
                 char = chr(random.randint(0x4E00, 0x9FA5))
                 result += char
@@ -94,7 +95,7 @@ class Random:
             return Unicode()
 
         if is_int:
-            return ''.join(str(secrets.randbelow(10)) for _ in range(length))
+            return "".join(str(secrets.randbelow(10)) for _ in range(length))
 
         # 选择字符集
         characters = string.ascii_letters + string.digits
@@ -103,7 +104,10 @@ class Random:
             characters += string.punctuation
 
         sys_random = random.SystemRandom()
-        return "".join(sys_random.choice(string.ascii_letters + string.digits) for _ in range(length))
+        return "".join(
+            sys_random.choice(string.ascii_letters + string.digits)
+            for _ in range(length)
+        )
 
     @staticmethod
     def hash(len: int | None = None) -> str:
@@ -118,7 +122,7 @@ class Random:
         """
 
         letters = string.printable
-        rand = ''.join(random.sample(letters, 10))
+        rand = "".join(random.sample(letters, 10))
         hash = hashlib.md5(rand.encode()).hexdigest()
         return hash[:len]
 
@@ -144,9 +148,9 @@ class Random:
         生成一个随机的IP地址。
         """
         if is_ipv6:
-            return ipaddress.IPv6Address(random.randint(0, 2**128-1)).compressed
+            return ipaddress.IPv6Address(random.randint(0, 2**128 - 1)).compressed
         else:
-            return ipaddress.IPv4Address(random.randint(0, 2**32-1)).compressed
+            return ipaddress.IPv4Address(random.randint(0, 2**32 - 1)).compressed
 
     @staticmethod
     def ip_suffix_is_0(is_ipv6: bool = False, suffix: str = 0) -> str:
@@ -154,11 +158,14 @@ class Random:
         生成一个随机后缀为`0`|`suffix`的IP地址。
         """
         if is_ipv6:
-            return ":".join(
-                [f"{random.randint(0, 65535):x}" for _ in range(4)]) + f"::{suffix}"
+            return (
+                ":".join([f"{random.randint(0, 65535):x}" for _ in range(4)])
+                + f"::{suffix}"
+            )
         else:
-            return ".".join(
-                [f"{random.randint(0, 255)}" for _ in range(3)]) + f".{suffix}"
+            return (
+                ".".join([f"{random.randint(0, 255)}" for _ in range(3)]) + f".{suffix}"
+            )
 
     @staticmethod
     def ip_range(is_ipv6: bool = False):
@@ -172,12 +179,10 @@ class Random:
         - 返回一个字符串，表示IP地址范围。如果is_ipv6为True，则返回IPv6地址范围，否则返回IPv4地址范围。
         """
         if is_ipv6:
-            ip = ":".join(
-                [f"{random.randint(0, 65535):x}" for _ in range(4)])
+            ip = ":".join([f"{random.randint(0, 65535):x}" for _ in range(4)])
             return f"{ip}::{random.randint(1, 10000):x}-{ip}::{random.randint(20000, 65500):x}"
         else:
-            ip = ".".join(
-                [f"{random.randint(0, 255)}" for _ in range(3)])
+            ip = ".".join([f"{random.randint(0, 255)}" for _ in range(3)])
             return f"{ip}.{random.randint(1, 100)}-{ip}.{random.randint(110, 254)}"
 
     @staticmethod
@@ -186,8 +191,7 @@ class Random:
         生成一个随机的IP子网掩码格式。
         """
         if is_ipv6:
-            netmask = netmask if netmask is not None else random.randint(
-                64, 128)
+            netmask = netmask if netmask is not None else random.randint(64, 128)
             return f"{Random.ip_suffix_is_0(True)}/{netmask}"
         else:
             netmask = netmask if netmask is not None else random.randint(8, 32)
@@ -199,6 +203,10 @@ class Random:
         """
         生成一个随机的MAC。
         """
-        mac_address = ':'.join(['{:02x}'.format(
-            (uuid.getnode() >> elements) & 0xff) for elements in range(0, 2*6, 2)])
+        mac_address = ":".join(
+            [
+                "{:02x}".format((uuid.getnode() >> elements) & 0xFF)
+                for elements in range(0, 2 * 6, 2)
+            ]
+        )
         return mac_address
