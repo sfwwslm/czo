@@ -1,5 +1,6 @@
 ### Example user template
 tmp/
+.vscode/
 
 # IntelliJ project files
 .idea
