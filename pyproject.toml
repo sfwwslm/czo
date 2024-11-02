@@ -23,7 +23,14 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-dev = ["build", "twine"]
+dev = [
+    "build",
+    "twine",
+    "black",
+]
+test=[
+    "pytest"
+]
 
 [project.urls]
 Homepage = "https://github.com/sfwwslm/czo"
