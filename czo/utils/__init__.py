@@ -1,7 +1,7 @@
 import inspect
 import unicodedata
 
-from .__meta import *
+from .__meta import Singleton
 
 
 def count_chr_length(text, no_ascii=2) -> int:
@@ -19,7 +19,7 @@ def count_chr_length(text, no_ascii=2) -> int:
     return length
 
 
-def get_methods_and_properties_with_docs(cls):
+def _get_methods_and_properties_with_docs(cls):
     """通过这个函数，可以方便地获取类的所有公共方法和属性，并以一种格式化的方式输出它们的名称和文档注释。"""
     methods_and_properties: dict[str, str] = {}
 
@@ -80,3 +80,9 @@ def get_methods_and_properties_with_docs(cls):
         print(info + " |")
     print(help_print)
     print(f" {'-'*max_length}")
+
+
+def add_help(cls):
+    """通过这个装饰器，可以方便地获取类的所有公共方法和属性，并以一种格式化的方式输出它们的名称和文档注释。"""
+    cls.help = lambda: _get_methods_and_properties_with_docs(cls)
+    return cls

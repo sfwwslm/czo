@@ -8,21 +8,19 @@ import uuid
 import warnings
 from typing import Literal
 
-from .utils import get_methods_and_properties_with_docs
+from .utils import add_help
 
 # 设置警告过滤器
 warnings.filterwarnings("always")
 
 
+@add_help
 class Random:
     """
     随机生成一些测试数据
     """
 
-    @classmethod
-    def help(cls):
-        """功能介绍"""
-        get_methods_and_properties_with_docs(cls)
+    def help(): ...
 
     @staticmethod
     def file(data: str | None = None) -> tuple:

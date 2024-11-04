@@ -3,15 +3,14 @@ import random
 import string
 from typing import Literal
 
-from .utils import get_methods_and_properties_with_docs
+from .utils import add_help
 
 
+@add_help
 class Person:
     """用于生成测试数据，所有数据都是随机生成的，仅用于测试目的"""
 
-    def help(self) -> None:
-        """功能介绍"""
-        get_methods_and_properties_with_docs(self.__class__)
+    def help() -> None: ...
 
     def __load_area_code_dict(self) -> dict[str, str]:
         """加载区域地址"""

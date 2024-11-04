@@ -3,18 +3,16 @@ import shutil
 import sys
 from pathlib import Path
 
-from .utils import get_methods_and_properties_with_docs
+from .utils import add_help
 
 
+@add_help
 class PathLib:
     """
     处理文件相关的功能
     """
 
-    @classmethod
-    def help(cls):
-        """功能介绍"""
-        get_methods_and_properties_with_docs(cls)
+    def help(): ...
 
     @staticmethod
     def clear_directory(path):
@@ -262,6 +260,7 @@ class PathLib:
         print(f"Total files moved: {moved_files_count}")
 
 
+@add_help
 class DirLib:
     """处理目录相关功能"""
 
@@ -273,10 +272,7 @@ class DirLib:
         if not self.directory.exists():
             self.directory.mkdir(parents=True)
 
-    @classmethod
-    def help(cls):
-        """功能介绍"""
-        get_methods_and_properties_with_docs(cls)
+    def help(): ...
 
     @property
     def is_directory_empty(self) -> bool:

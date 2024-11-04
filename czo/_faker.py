@@ -3,9 +3,10 @@ import random
 import string
 import warnings
 
-from .utils import Singleton, get_methods_and_properties_with_docs
+from .utils import Singleton, add_help
 
 
+@add_help
 class Faker(Singleton):
     """伪造常用数据，计划在0.1.20删除"""
 
@@ -16,9 +17,7 @@ class Faker(Singleton):
             stacklevel=2,
         )
 
-    def help(self):
-        """功能介绍"""
-        get_methods_and_properties_with_docs(self.__class__)
+    def help(): ...
 
     @property
     def __areaCodeDict(self) -> dict:

@@ -3,14 +3,13 @@ from ipaddress import IPv4Address, IPv6Address
 from time import sleep
 from typing import Any, Generator, Union
 
-from .utils import get_methods_and_properties_with_docs
+from .utils import add_help
 
 
+@add_help
 class NetLib:
-    @classmethod
-    def help(cls):
-        """功能介绍"""
-        get_methods_and_properties_with_docs(cls)
+
+    def help(): ...
 
     @staticmethod
     def cidr(address: str, netmask_or_prefix: int | str) -> dict[str, Any] | ValueError:
