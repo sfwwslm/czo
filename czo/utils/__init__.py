@@ -83,6 +83,6 @@ def _get_methods_and_properties_with_docs(cls):
 
 
 def add_help(cls):
-    """通过这个装饰器，可以方便地获取类的所有公共方法和属性，并以一种格式化的方式输出它们的名称和文档注释。"""
+    """通过这个装饰器，可以方便地为类添加一个help 方法，该方法可以方便地获取类的所有公共方法和属性，并以一种格式化的方式输出它们的名称和文档注释。"""
     cls.help = lambda: _get_methods_and_properties_with_docs(cls)
     return cls

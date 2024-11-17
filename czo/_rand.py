@@ -20,7 +20,7 @@ class Random:
     随机生成一些测试数据
     """
 
-    def help(): ...
+    def help() -> None: ...
 
     @staticmethod
     def file(data: str | None = None) -> tuple:

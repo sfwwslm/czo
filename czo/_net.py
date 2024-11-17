@@ -1,6 +1,5 @@
 import ipaddress
 from ipaddress import IPv4Address, IPv6Address
-from time import sleep
 from typing import Any, Generator, Union
 
 from .utils import add_help
@@ -9,7 +8,7 @@ from .utils import add_help
 @add_help
 class NetLib:
 
-    def help(): ...
+    def help() -> None: ...
 
     @staticmethod
     def cidr(address: str, netmask_or_prefix: int | str) -> dict[str, Any] | ValueError:

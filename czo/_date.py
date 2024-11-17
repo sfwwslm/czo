@@ -12,7 +12,7 @@ class DateLib:
     提供了一组静态方法，用于处理日期和时间的常见操作。
     """
 
-    def help(): ...
+    def help() -> None: ...
 
     @staticmethod
     def timestamp() -> int:

@@ -12,7 +12,7 @@ class PathLib:
     处理文件相关的功能
     """
 
-    def help(): ...
+    def help() -> None: ...
 
     @staticmethod
     def clear_directory(path):
