@@ -1,4 +1,4 @@
-from czo import DateLib, DirLib, Faker, NetLib, PathLib, Person, Random
+from czo import DateLib, DirLib, NetLib, PathLib, Person, Random
 
 
 def test_random(capsys):
@@ -31,14 +31,6 @@ def test_netlib(capsys):
     captured = capsys.readouterr()
 
     assert "NetLib" in captured.out and "help" in captured.out
-
-
-def test_faker(capsys):
-    Faker.help()
-
-    captured = capsys.readouterr()
-
-    assert "Faker" in captured.out and "help" in captured.out
 
 
 def test_dirlib(capsys):
