@@ -8,7 +8,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "czo"
-version = "0.1.17"
+version = "0.1.18"
 authors = [
     { name = "sfwwslm", email = "sfwwslm@gmail.com" },
 ]
@@ -27,9 +27,7 @@ dev = [
     "build",
     "twine",
     "black",
-]
-test=[
-    "pytest"
+    "pytest",
 ]
 
 [project.urls]
