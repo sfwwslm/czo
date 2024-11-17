@@ -27,6 +27,8 @@ dev = [
     "build",
     "twine",
     "black",
+]
+test = [
     "pytest",
 ]
 
