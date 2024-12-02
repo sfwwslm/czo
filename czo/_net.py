@@ -308,3 +308,13 @@ class NetLib:
                 mac_list = []
             if max == count and len(mac_list) != 0:
                 yield mac_list
+
+    @staticmethod
+    def cidr_to_subnet(cidr):
+        """从子网掩码位数获取IPv4地址
+
+        Example:
+        >>> NetLib.cidr_to_subnet(24)
+        '255.255.255.0'
+        """
+        return str(ipaddress.IPv4Network(f"0.0.0.0/{cidr}").netmask)
