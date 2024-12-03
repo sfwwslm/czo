@@ -26,7 +26,7 @@ class DateLib:
         """
         返回当前时间的时间戳。
         """
-        return int(time.time() * 1000)
+        return int(round(time.time() * 1000))
 
     @staticmethod
     def now_date() -> str:
