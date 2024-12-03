@@ -164,15 +164,17 @@ class PathLib:
         ]
 
     @staticmethod
-    def mkdir_dir(path) -> None:
+    def mkdir(path) -> None:
         """
-        如果目录不存在就创建
+        如果目录不存在就创建,支持多级目录
 
         Args:
             path:目录
         """
-        if not os.path.exists(path):
-            os.mkdir(path)
+
+        p = Path(path)
+        if not p.exists():
+            p.mkdir(parents=True)
 
     @staticmethod
     def get_project_path(project_name: str) -> str:
