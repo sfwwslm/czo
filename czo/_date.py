@@ -1,6 +1,7 @@
 import datetime
 import random
 import time
+from typing import Optional, Union
 import warnings
 
 from .utils import add_help
@@ -336,25 +337,26 @@ class DateLib:
 
     @staticmethod
     def get_dates_offset_by_days(
-        day: int, now: str | datetime.datetime | None = None
+        day: int,
+        now: Optional[Union[str, datetime.datetime]] = None,
+        date_ok: bool = False,
     ) -> tuple[str, str]:
         """
-        获取当前日期和过去某一天的日期，以字符串格式返回。
+        获取指定日期与当前日期之间的偏移日期，以字符串格式返回。
 
         Args:
-            day: int - 与当前日期的偏移天数，负数表示过去，正数表示未来。
-            now: str | datetime.datetime | None - 默认为None，可以设置一个日期表示当前日期，来计算偏移量。
+            day (int): 与当前日期的偏移天数，负数表示过去，正数表示未来。
+            now (Optional[Union[str, datetime.datetime]]): 参考日期，默认为当前时间。如果为字符串，需符合 '%Y-%m-%d %H:%M:%S' 格式。
+            date_ok (bool): 是否仅返回日期（无时间）。
 
         Returns:
-            tuple[str, str] - 包含两个日期字符串的元组，第一个是过去某一天的日期，第二个是当前日期。
+            tuple[str, str]: 包含两个日期字符串的元组，第一个为偏移后的日期，第二个为参考日期。
 
         Examples:
-            >>> from czo import DateLib
-            >>> print(DateLib.get_dates_offset_by_days(-3))
-            ('2024-07-02 15:12:15', '2024-07-05 15:12:15')
-            >>>
-            >>> print(DateLib.get_dates_offset_by_days(-3, "2024-06-8 07:08:16"))
-            ('2024-06-05 07:08:16', '2024-06-08 07:08:16')
+            >>> print(DateLib.get_dates_offset_by_days(-7))
+            ('2024-11-28 11:06:13', '2024-12-04 11:06:13')
+            >>> print(DateLib.get_dates_offset_by_days(-7, "2024-12-20 00:02:00"))
+            ('2024-12-14 00:02:00', '2024-12-20 00:02:00')
         """
         if isinstance(now, str):
             today = datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S")
@@ -366,6 +368,8 @@ class DateLib:
         # 创建一个时间偏移量，用于计算过去某一天的日期
         offset = datetime.timedelta(days=day)
 
-        past = (today + offset).strftime("%Y-%m-%d %H:%M:%S")
-        today = today.strftime("%Y-%m-%d %H:%M:%S")
+        fmt = "%Y-%m-%d" if date_ok else "%Y-%m-%d %H:%M:%S"
+
+        past = (today + offset).strftime(fmt)
+        today = today.strftime(fmt)
         return (past, today)
