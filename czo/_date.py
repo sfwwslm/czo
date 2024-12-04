@@ -354,9 +354,9 @@ class DateLib:
 
         Examples:
             >>> print(DateLib.get_dates_offset_by_days(-7))
-            ('2024-11-28 11:06:13', '2024-12-04 11:06:13')
+            ('2024-11-27 11:53:25', '2024-12-04 11:53:25')
             >>> print(DateLib.get_dates_offset_by_days(-7, "2024-12-20 00:02:00"))
-            ('2024-12-14 00:02:00', '2024-12-20 00:02:00')
+            ('2024-12-13 00:02:00', '2024-12-20 00:02:00')
         """
         if isinstance(now, str):
             today = datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S")
