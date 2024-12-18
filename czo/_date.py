@@ -1,8 +1,8 @@
 import datetime
 import random
 import time
-from typing import Optional, Union
 import warnings
+from typing import Literal, Optional, Union, overload
 
 from .utils import add_help
 
@@ -373,3 +373,211 @@ class DateLib:
         past = (today + offset).strftime(fmt)
         today = today.strftime(fmt)
         return (past, today)
+
+    @overload
+    @staticmethod
+    def calculate_past_time(
+        format: str = "%Y-%m-%d %H:%M:%S",
+        *,
+        reset_datetime: str | datetime.datetime = None,
+        ret_datetime: Literal[False] = False,
+        ret_timestamp: Literal[False] = False,
+        ret_timestamp_ms: Literal[False] = False,
+        year_ago: int | None = None,
+        month_ago: int | None = None,
+        day_ago: int | None = None,
+        hour_ago: int | None = None,
+        minute_ago: int | None = None,
+        second_ago: int | None = None,
+        microsecond_ago: int | None = None,
+    ) -> tuple[str, str]: ...
+    @overload
+    @staticmethod
+    def calculate_past_time(
+        format: str = "%Y-%m-%d %H:%M:%S",
+        *,
+        reset_datetime: str | datetime.datetime = None,
+        ret_datetime: Literal[True] = True,
+        ret_timestamp: Literal[False] = False,
+        ret_timestamp_ms: Literal[False] = False,
+        year_ago: int | None = None,
+        month_ago: int | None = None,
+        day_ago: int | None = None,
+        hour_ago: int | None = None,
+        minute_ago: int | None = None,
+        second_ago: int | None = None,
+        microsecond_ago: int | None = None,
+    ) -> tuple[datetime.datetime, datetime.datetime]: ...
+
+    @overload
+    @staticmethod
+    def calculate_past_time(
+        format: str = "%Y-%m-%d %H:%M:%S",
+        *,
+        reset_datetime: str | datetime.datetime = None,
+        ret_datetime: Literal[False] = False,
+        ret_timestamp: Literal[True] = True,
+        ret_timestamp_ms: Literal[False] = False,
+        year_ago: int | None = None,
+        month_ago: int | None = None,
+        day_ago: int | None = None,
+        hour_ago: int | None = None,
+        minute_ago: int | None = None,
+        second_ago: int | None = None,
+        microsecond_ago: int | None = None,
+    ) -> tuple[int, int]: ...
+
+    @overload
+    @staticmethod
+    def calculate_past_time(
+        format: str = "%Y-%m-%d %H:%M:%S",
+        *,
+        reset_datetime: str | datetime.datetime = None,
+        ret_datetime: Literal[False] = False,
+        ret_timestamp: Literal[False] = False,
+        ret_timestamp_ms: Literal[True] = True,
+        year_ago: int | None = None,
+        month_ago: int | None = None,
+        day_ago: int | None = None,
+        hour_ago: int | None = None,
+        minute_ago: int | None = None,
+        second_ago: int | None = None,
+        microsecond_ago: int | None = None,
+    ) -> tuple[int, int]: ...
+
+    @staticmethod
+    def calculate_past_time(
+        format: str = "%Y-%m-%d %H:%M:%S",
+        *,
+        reset_datetime: str | datetime.datetime = None,
+        ret_datetime: bool = False,
+        ret_timestamp: bool = False,
+        ret_timestamp_ms: bool = False,
+        year_ago: int | None = None,
+        month_ago: int | None = None,
+        day_ago: int | None = None,
+        hour_ago: int | None = None,
+        minute_ago: int | None = None,
+        second_ago: int | None = None,
+        microsecond_ago: int | None = None,
+    ) -> (
+        tuple[datetime.datetime, datetime.datetime] | tuple[int, int] | tuple[str, str]
+    ):
+        """计算过去某个时间点，基于当前时间减去指定的时间间隔。
+
+        TODO 在计算时间方面还有些细节待完善。
+
+        Args:
+            format (str): 日期时间格式字符串，默认为 "%Y-%m-%d %H:%M:%S"。
+            reset_datetime (str|datetime.datetime): reset_datetime (str | datetime.datetime, 可选): 计算的起始时间，可以是字符串（格式为 "%Y-%m-%d %H:%M:%S"）或 `datetime` 对象。如果为 `None`，则使用当前时间。
+            ret_datetime (bool): 如果为 True，返回 `datetime` 对象。
+            ret_timestamp (bool): 如果为 True，返回时间戳（秒）。
+            ret_timestamp_ms (bool): 如果为 True，返回时间戳（毫秒）。
+            year_ago (int, 可选): 要回退的年数。
+            month_ago (int, 可选): 要回退的月数。
+            day_ago (int, 可选): 要回退的天数。
+            hour_ago (int, 可选): 要回退的小时数。
+            minute_ago (int, 可选): 要回退的分钟数。
+            second_ago (int, 可选): 要回退的秒数。
+            microsecond_ago (int, 可选): 要回退的微秒数。
+
+        Returns:
+            - 如果 `ret_datetime` 为 True，返回 (`datetime.datetime`, `datetime.datetime`)。
+            - 如果 `ret_timestamp` 为 True，返回 (`int`, `int`)。
+            - 如果 `ret_timestamp_ms` 为 True，返回 (`int`, `int`)。
+            - 否则，返回格式化后的字符串 (`str`, `str`)。
+
+        Raises:
+            ValueError: 当 `ret_datetime`, `ret_timestamp`, `ret_timestamp_ms` 中有多个为 True 时抛出。
+        """
+
+        if sum([ret_datetime, ret_timestamp, ret_timestamp_ms]) > 1:
+            raise ValueError(
+                "只能有其中一个参数为 True: 'ret_datetime', 'ret_timestamp', or 'ret_timestamp_ms'."
+            )
+
+        if isinstance(reset_datetime, str):
+            now: datetime.datetime = datetime.datetime.strptime(
+                reset_datetime, "%Y-%m-%d %H:%M:%S"
+            )
+        elif isinstance(reset_datetime, datetime.datetime):
+            now = reset_datetime
+        else:
+            now = datetime.datetime.now()
+
+        # 计算过去的时间
+        y = now.year - year_ago if year_ago else now.year
+
+        if month_ago and now.month > 1:
+            m = now.month - month_ago
+            if abs(m) == 0:
+                m: int = now.month + 1
+                y -= 1
+            elif m < 0:
+                m = now.month
+                y -= 1
+        else:
+            m = 12
+            y -= 1
+
+        d = now.day - day_ago if day_ago else now.day
+        h = now.hour - hour_ago if hour_ago else now.hour
+        mi = now.minute - minute_ago if minute_ago else now.minute
+        s = now.second - second_ago if second_ago else now.second
+        ms = now.microsecond - microsecond_ago if microsecond_ago else now.microsecond
+
+        ago = datetime.datetime(
+            year=y,
+            month=m,
+            day=d,
+            hour=h,
+            minute=mi,
+            second=s,
+            microsecond=ms,
+        )
+
+        if ret_datetime:
+            return ago, now
+        elif ret_timestamp:
+            return round(ago.timestamp()), round(now.timestamp())
+        elif ret_timestamp_ms:
+            return round(ago.timestamp() * 1000), round(now.timestamp() * 1000)
+        else:
+            return ago.strftime(format), now.strftime(format)
+
+
+@add_help
+class Timer:
+    """计时器"""
+
+    def help(): ...
+
+    def __init__(self) -> None:
+        self.times = []
+        self.start()
+
+    def start(self) -> None:
+        """启动计时器"""
+        self.tik: float = time.time()
+
+    def stop(self) -> float:
+        """停止计时器并将时间记录在列表中"""
+        self.times.append(time.time() - self.tik)
+        return self.times[-1]
+
+    def avg(self) -> float:
+        """返回平均时间"""
+        return sum(self.times) / len(self.times)
+
+    def sum(self) -> int:
+        """返回时间总和"""
+        return sum(self.times)
+
+    def cumsum(self) -> list:
+        """返回累计时间"""
+        cumulative = []
+        total = 0
+        for t in self.times:
+            total += t
+            cumulative.append(total)
+        return cumulative
