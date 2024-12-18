@@ -2,7 +2,7 @@
 辅助测试的一些常用功能
 """
 
-from ._date import DateLib
+from ._date import DateLib, Timer
 from ._net import NetLib
 from ._path import DirLib, PathLib
 from ._person import Person
