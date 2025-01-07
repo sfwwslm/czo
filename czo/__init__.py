@@ -15,4 +15,5 @@ __all__: list[str] = [
     "Random",
     "NetLib",
     "Person",
+    "Timer"
 ]
