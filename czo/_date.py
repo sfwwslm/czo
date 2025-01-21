@@ -505,36 +505,25 @@ class DateLib:
         else:
             now = datetime.datetime.now()
 
-        # 计算过去的时间
-        y = now.year - year_ago if year_ago else now.year
+        re = {}
+        if year_ago:
+            re["year"] = year_ago
+        if month_ago:
+            re["month"] = month_ago
+        if day_ago:
+            re["day"] = day_ago
+        if hour_ago:
+            re["hour"] = hour_ago
+        if minute_ago:
+            re["minute"] = minute_ago
+        if second_ago:
+            re["second"] = second_ago
+        if microsecond_ago:
+            re["microsecond"] = microsecond_ago
 
-        if month_ago and now.month > 1:
-            m = now.month - month_ago
-            if abs(m) == 0:
-                m: int = now.month + 1
-                y -= 1
-            elif m < 0:
-                m = now.month
-                y -= 1
-        else:
-            m = 12
-            y -= 1
-
-        d = now.day - day_ago if day_ago else now.day
-        h = now.hour - hour_ago if hour_ago else now.hour
-        mi = now.minute - minute_ago if minute_ago else now.minute
-        s = now.second - second_ago if second_ago else now.second
-        ms = now.microsecond - microsecond_ago if microsecond_ago else now.microsecond
-
-        ago = datetime.datetime(
-            year=y,
-            month=m,
-            day=d,
-            hour=h,
-            minute=mi,
-            second=s,
-            microsecond=ms,
-        )
+        ago = now.replace(**re)
+        
+        ago = now - (now - ago)
 
         if ret_datetime:
             return ago, now
