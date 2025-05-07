@@ -345,9 +345,7 @@ class DirLib:
             delete_glob_file(Path("./"), "*.json")
         """
         try:
-            for file in dir_path.glob("qemu_info_*.json"):
+            for file in dir_path.glob(file_name):
                 file.unlink()
         except Exception as e:
             return e
-
-        return True
