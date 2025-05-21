@@ -2,11 +2,11 @@ import datetime
 import random
 import time
 import warnings
-from typing import Optional, Union
+from typing import Optional, Union, TypeAlias
 
 from .utils import add_help
 
-type dt = datetime.datetime
+dt: TypeAlias = datetime.datetime
 
 
 @add_help
