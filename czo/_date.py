@@ -522,7 +522,7 @@ class DateLib:
             re["microsecond"] = microsecond_ago
 
         ago = now.replace(**re)
-        
+
         ago = now - (now - ago)
 
         if ret_datetime:
