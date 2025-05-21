@@ -1,8 +1,10 @@
 import ipaddress
 from ipaddress import IPv4Address, IPv6Address
 from typing import Any, Generator, Union
-
+import warnings
 from .utils import add_help
+
+warnings.warn("NetLib 已改为 NetworkUtils", DeprecationWarning, stacklevel=3)
 
 
 @add_help

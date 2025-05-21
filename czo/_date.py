@@ -6,6 +6,10 @@ from typing import Literal, Optional, Union, overload
 
 from .utils import add_help
 
+warnings.warn(
+    "DateLib, Timer 已改为 DateTimeUtils, Timer", DeprecationWarning, stacklevel=3
+)
+
 
 @add_help
 class DateLib:

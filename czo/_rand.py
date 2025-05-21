@@ -10,8 +10,7 @@ from typing import Literal
 
 from .utils import add_help
 
-# 设置警告过滤器
-warnings.filterwarnings("always")
+warnings.warn("Random 已改为 RandomUtils", DeprecationWarning, stacklevel=3)
 
 
 @add_help
