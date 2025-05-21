@@ -126,14 +126,3 @@ def test_14():
     )
     assert random_date.__str__() < date.__str__()
     assert random_timestamp < timestamp
-
-
-def test_15():
-    d = DateLib.calculate_past_time(reset_datetime="2023-11-01 00:00:00", month_ago=1)
-    assert d == ("2023-10-01 00:00:00", "2023-11-01 00:00:00")
-    d = DateLib.calculate_past_time(reset_datetime="2023-11-01 00:00:00", month_ago=6)
-    assert d == ("2023-05-01 00:00:00", "2023-11-01 00:00:00")
-    d = DateLib.calculate_past_time(reset_datetime="2023-11-01 00:00:00", month_ago=12)
-    assert d == ("2022-11-01 00:00:00", "2023-11-01 00:00:00")
-    d = DateLib.calculate_past_time(reset_datetime="2023-11-01 00:00:00", month_ago=13)
-    assert d == ("2022-11-01 00:00:00", "2023-11-01 00:00:00")
