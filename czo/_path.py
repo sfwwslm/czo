@@ -2,11 +2,9 @@ import os
 import shutil
 import sys
 from pathlib import Path
-import warnings
+
 
 from .utils import add_help
-
-warnings.warn("DirLib, PathLib 已改为 PathUtils", DeprecationWarning, stacklevel=3)
 
 
 @add_help

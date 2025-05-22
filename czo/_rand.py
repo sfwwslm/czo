@@ -5,12 +5,9 @@ import secrets
 import shutil
 import string
 import uuid
-import warnings
 from typing import Literal
 
 from .utils import add_help
-
-warnings.warn("Random 已改为 RandomUtils", DeprecationWarning, stacklevel=3)
 
 
 @add_help

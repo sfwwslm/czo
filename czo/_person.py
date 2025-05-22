@@ -2,11 +2,8 @@ import datetime
 import random
 import string
 from typing import Literal
-import warnings
 
 from .utils import add_help
-
-warnings.warn("Person 已改为 FakeDataUtils", DeprecationWarning, stacklevel=3)
 
 
 @add_help
