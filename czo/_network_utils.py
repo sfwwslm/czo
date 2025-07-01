@@ -1,5 +1,4 @@
 import ipaddress
-from ipaddress import IPv4Address, IPv6Address
 from typing import Any, Generator, Union
 
 from .utils import add_help
@@ -7,7 +6,6 @@ from .utils import add_help
 
 @add_help
 class NetworkUtils:
-
     @staticmethod
     def help() -> None: ...
 
@@ -252,14 +250,16 @@ class NetworkUtils:
             return ip in ip_network
         elif subnet_str and "-" in subnet_str:
             start_ip_str, end_ip_str = map(str.strip, subnet_str.split("-"))
-            start_ip, end_ip = ipaddress.ip_address(start_ip_str), ipaddress.ip_address(
-                end_ip_str
+            start_ip, end_ip = (
+                ipaddress.ip_address(start_ip_str),
+                ipaddress.ip_address(end_ip_str),
             )
             return start_ip <= ip <= end_ip  # type: ignore
 
         if src_ip and dst_ip:
-            start_ip, end_ip = ipaddress.ip_address(src_ip), ipaddress.ip_address(
-                dst_ip
+            start_ip, end_ip = (
+                ipaddress.ip_address(src_ip),
+                ipaddress.ip_address(dst_ip),
             )
             return start_ip <= ip <= end_ip  # type: ignore
 
