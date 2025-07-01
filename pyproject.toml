@@ -27,8 +27,6 @@ dev = [
     "build",
     "twine",
     "black",
-]
-test = [
     "pytest",
 ]
 
@@ -48,3 +46,8 @@ content-type = "text/markdown"
 
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
 path = "README.md"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+
+addopts = "-ra -v -s --disable-warnings"
