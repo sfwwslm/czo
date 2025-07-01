@@ -2,7 +2,7 @@ import datetime
 import random
 import time
 import warnings
-from typing import Optional, Union, TypeAlias
+from typing import Optional, TypeAlias, Union
 
 from .utils import add_help
 
@@ -48,10 +48,11 @@ class DateTimeUtils:
 
     @staticmethod
     def current_date() -> datetime.date:
+        """返回当前日期。"""
         return datetime.date.today()
 
     @staticmethod
-    def current_ymd() -> list:
+    def current_ymd() -> list[str]:
         """
         返回当前日期的年、月、日。
 
@@ -372,6 +373,7 @@ class DateTimeUtils:
             >>> print(DateLib.get_dates_offset_by_days(-7, "2024-12-20 00:02:00"))
             ('2024-12-13 00:02:00', '2024-12-20 00:02:00')
         """
+        # TODO test
         if isinstance(now, str):
             today = datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S")
         elif isinstance(now, datetime.datetime):
