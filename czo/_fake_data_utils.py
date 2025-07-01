@@ -297,15 +297,13 @@ class FakeDataUtils:
         rand_prefix: str = random.choice(landline_number_prefix)
         return f"{rand_prefix}-{random.choice(string.digits[1:])}{''.join(random.choices(string.digits, k=7))}"
 
-    def latitude(self) -> float:
+    def latitude(self) -> str:
         """纬度 N（北） 表示北半球。S（南） 表示南半球。"""
-        return float(f"{round(random.uniform(-90, 90), 6)}°{random.choice(['N', 'S'])}")
+        return f"{round(random.uniform(-90, 90), 6)}°{random.choice(['N', 'S'])}"
 
-    def longitude(self) -> float:
+    def longitude(self) -> str:
         """经度 E（东） 表示东半球。W（西） 表示西半球。"""
-        return float(
-            f"{round(random.uniform(-180, 180), 6)}°{random.choice(['E', 'W'])}"
-        )
+        return f"{round(random.uniform(-180, 180), 6)}°{random.choice(['E', 'W'])}"
 
     def occupation(self) -> str:
         """职业"""
