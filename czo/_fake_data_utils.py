@@ -633,16 +633,16 @@ class FakeDataUtils:
             "00853",
         ]
         rand_prefix: str = random.choice(prefix)
-        return f"{rand_prefix}-{random.choice(string.digits[1:])}{''.join(random.choices(string.digits,k=7))}"
+        return f"{rand_prefix}-{random.choice(string.digits[1:])}{''.join(random.choices(string.digits, k=7))}"
 
     def latitude(self) -> float:
         """纬度 N（北） 表示北半球。S（南） 表示南半球。"""
-        return float(f"{round(random.uniform(-90, 90), 6)}°{random.choice(['N','S'])}")
+        return float(f"{round(random.uniform(-90, 90), 6)}°{random.choice(['N', 'S'])}")
 
     def longitude(self) -> float:
         """经度 E（东） 表示东半球。W（西） 表示西半球。"""
         return float(
-            f"{round(random.uniform(-180, 180), 6)}°{random.choice(['E','W'])}"
+            f"{round(random.uniform(-180, 180), 6)}°{random.choice(['E', 'W'])}"
         )
 
     def occupation(self) -> str:
@@ -728,20 +728,13 @@ class FakeDataUtils:
 
     def school(self) -> str:
         """学校名称"""
-        return random.choice(
-            [
-                "麻省理工学院",
-                "牛津大学",
-                "斯坦福大学",
-                "剑桥大学",
-                "哈佛大学",
-                "加州理工学院",
-                "帝国理工学院",
-                "苏黎世联邦理工大学",
-                "伦敦大学学院",
-                "芝加哥大学",
-            ]
-        )
+        from .data._data import education_keywords, regions
+
+        suffixes = ["中学", "学校", "分校", "大学", "学院"]
+        prefix = random.choice(regions)
+        keyword = random.choice(education_keywords)
+        suffix = random.choice(suffixes)
+        return f"{prefix}{keyword}{suffix}"
 
     def full_name(self) -> str:
         """姓名"""
@@ -1050,7 +1043,7 @@ class FakeDataUtils:
                 f"{province_letter}{letter_part}{symbol}{battery_symbol}{license_plate}"
             )
 
-        return f"{province_letter}{letter_part}{symbol}{license_plate }"
+        return f"{province_letter}{letter_part}{symbol}{license_plate}"
 
     def email(self, prefix=None):
         """邮箱"""
