@@ -14,7 +14,7 @@ jobs:
       fail-fast: false # 在一个版本失败时停止所有的测试
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ["3.10", "3.12"] # 使用这两个版本测试
+        python-version: ["3.13"]
 
     steps:
     - uses: actions/checkout@v4
@@ -40,4 +40,4 @@ jobs:
       
     - name: Test with pytest
       run: |
-        pytest
+        uv run pytest
