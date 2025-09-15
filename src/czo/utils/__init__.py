@@ -1,8 +1,6 @@
 import inspect
 import unicodedata
 
-from .__meta import Singleton
-
 
 def count_chr_length(text, no_ascii=2) -> int:
     """
@@ -27,6 +25,8 @@ def _get_methods_and_properties_with_docs(cls, *args, **kwargs):
     class_doc: str | None = inspect.getdoc(cls)
     if class_doc is not None:
         methods_and_properties["__class__"] = f"C: {class_doc}".split("\n")[0]
+
+    prefix = ""
 
     # 获取类的所有成员（包括方法和属性）
     for name, member in inspect.getmembers(cls):
@@ -64,8 +64,8 @@ def _get_methods_and_properties_with_docs(cls, *args, **kwargs):
 
     tag: str = f"【{cls.__name__}】 F|P|M 分别表示 函数|属性|方法 。C 是类的文档注释。"
     tag_length: int = count_chr_length(tag)
-    print(f"| {tag}{' ' * (max_length-tag_length-2)} |")
-    print(f"|{'-'*(max_length)}|")
+    print(f"| {tag}{' ' * (max_length - tag_length - 2)} |")
+    print(f"|{'-' * (max_length)}|")
 
     # 打印方法和属性及其文档注释
     help_print = None
@@ -79,7 +79,7 @@ def _get_methods_and_properties_with_docs(cls, *args, **kwargs):
             continue
         print(info + " |")
     print(help_print)
-    print(f" {'-'*max_length}")
+    print(f" {'-' * max_length}")
 
 
 def add_help(cls):

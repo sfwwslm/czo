@@ -3,18 +3,19 @@ import random
 import string
 from typing import Literal
 
-from .utils import add_help
+from . import add_help
 
 
 @add_help
-class Person:
+class Faker:
     """用于生成测试数据，所有数据都是随机生成的，仅用于测试目的"""
 
+    @staticmethod
     def help() -> None: ...
 
     def __load_area_code_dict(self) -> dict[str, str]:
         """加载区域地址"""
-        from .data._internal_utils import data_dict
+        from ..data._internal_utils import data_dict
 
         return data_dict
 
@@ -63,7 +64,7 @@ class Person:
             "5": "7",
             "6": "6",
             "7": "5",
-            "8": "5",
+            "8": "4",
             "9": "3",
             "10": "2",
         }  # 校验码映射
@@ -147,7 +148,7 @@ class Person:
 
     def address(self) -> str:
         """地址"""
-        from .data._addr import addr_info_list
+        from ..data._addr import addr_info_list
 
         return random.choice(addr_info_list)
 
@@ -232,7 +233,7 @@ class Person:
 
     def store_name(self) -> str:
         """店铺名称"""
-        from .data._shop_sign import shop_sign_list
+        from ..data._shop_sign import shop_sign_list
 
         return random.choice(shop_sign_list)
 
@@ -291,454 +292,34 @@ class Person:
 
     def landline_number(self) -> str:
         """座机号"""
-        prefix: list[str] = [
-            "010",
-            "022",
-            "0311",
-            "0315",
-            "0335",
-            "0310",
-            "0319",
-            "0312",
-            "0313",
-            "0314",
-            "0317",
-            "0316",
-            "0318",
-            "0351",
-            "0352",
-            "0353",
-            "0355",
-            "0356",
-            "0349",
-            "0354",
-            "0359",
-            "0350",
-            "0357",
-            "0358",
-            "0471",
-            "0472",
-            "0473",
-            "0476",
-            "0475",
-            "0477",
-            "0470",
-            "0478",
-            "0474",
-            "0482",
-            "0479",
-            "0483",
-            "024",
-            "0411",
-            "0412",
-            "0413",
-            "0414",
-            "0415",
-            "0416",
-            "0417",
-            "0418",
-            "0419",
-            "0427",
-            "0410",
-            "0421",
-            "0429",
-            "0431",
-            "0423",
-            "0434",
-            "0437",
-            "0435",
-            "0439",
-            "0438",
-            "0436",
-            "0433",
-            "0451",
-            "0452",
-            "0467",
-            "0468",
-            "0469",
-            "0459",
-            "0458",
-            "0454",
-            "0464",
-            "0453",
-            "0456",
-            "0455",
-            "0457",
-            "021",
-            "025",
-            "0510",
-            "0516",
-            "0519",
-            "0512",
-            "0513",
-            "0518",
-            "0517",
-            "0515",
-            "0514",
-            "0511",
-            "0523",
-            "0527",
-            "0571",
-            "0574",
-            "0577",
-            "0573",
-            "0572",
-            "0575",
-            "0579",
-            "0570",
-            "0580",
-            "0576",
-            "0578",
-            "0551",
-            "0553",
-            "0552",
-            "0554",
-            "0555",
-            "0561",
-            "0562",
-            "0556",
-            "0559",
-            "0550",
-            "0558",
-            "0557",
-            "0564",
-            "0566",
-            "0563",
-            "0591",
-            "0592",
-            "0594",
-            "0598",
-            "0595",
-            "0596",
-            "0599",
-            "0597",
-            "0593",
-            "0791",
-            "0798",
-            "0799",
-            "0792",
-            "0790",
-            "0701",
-            "0797",
-            "0796",
-            "0795",
-            "0794",
-            "0793",
-            "0531",
-            "0532",
-            "0533",
-            "0632",
-            "0546",
-            "0535",
-            "0536",
-            "0537",
-            "0538",
-            "0631",
-            "0633",
-            "0539",
-            "0534",
-            "0635",
-            "0543",
-            "0530",
-            "0371",
-            "0378",
-            "0379",
-            "0375",
-            "0372",
-            "0392",
-            "0373",
-            "0391",
-            "0393",
-            "0374",
-            "0395",
-            "0398",
-            "0377",
-            "0370",
-            "0376",
-            "0394",
-            "0396",
-            "027",
-            "0714",
-            "0719",
-            "0717",
-            "0710",
-            "0711",
-            "0724",
-            "0712",
-            "0716",
-            "0713",
-            "0715",
-            "0722",
-            "0718",
-            "0728",
-            "0731",
-            "0733",
-            "0732",
-            "0734",
-            "0739",
-            "0730",
-            "0736",
-            "0744",
-            "0737",
-            "0735",
-            "0746",
-            "0745",
-            "0738",
-            "0743",
-            "020",
-            "0751",
-            "0755",
-            "0756",
-            "0754",
-            "0757",
-            "0750",
-            "0759",
-            "0668",
-            "0758",
-            "0752",
-            "0753",
-            "0660",
-            "0762",
-            "0662",
-            "0763",
-            "0769",
-            "0760",
-            "0768",
-            "0663",
-            "0766",
-            "0771",
-            "0772",
-            "0773",
-            "0774",
-            "0779",
-            "0770",
-            "0777",
-            "0775",
-            "0776",
-            "0778",
-            "0898",
-            "023",
-            "028",
-            "0813",
-            "0812",
-            "0830",
-            "0838",
-            "0816",
-            "0839",
-            "0825",
-            "0832",
-            "0833",
-            "0817",
-            "0831",
-            "0826",
-            "0818",
-            "0835",
-            "0827",
-            "0873",
-            "0836",
-            "0834",
-            "0851",
-            "0858",
-            "0852",
-            "0853",
-            "0857",
-            "0856",
-            "0859",
-            "0855",
-            "0854",
-            "0871",
-            "0874",
-            "0877",
-            "0875",
-            "0870",
-            "0888",
-            "0879",
-            "0883",
-            "0878",
-            "0876",
-            "0691",
-            "0872",
-            "0692",
-            "0886",
-            "0887",
-            "0891",
-            "0892",
-            "0895",
-            "0894",
-            "0893",
-            "0896",
-            "0897",
-            "029",
-            "0919",
-            "0917",
-            "0910",
-            "0913",
-            "0911",
-            "0916",
-            "0912",
-            "0915",
-            "0914",
-            "0931",
-            "0937",
-            "0935",
-            "0943",
-            "0938",
-            "0936",
-            "0933",
-            "0934",
-            "0932",
-            "0939",
-            "0930",
-            "0941",
-            "0971",
-            "0972",
-            "0970",
-            "0973",
-            "0974",
-            "0975",
-            "0976",
-            "0977",
-            "0951",
-            "0952",
-            "0953",
-            "0954",
-            "0955",
-            "0991",
-            "0990",
-            "0995",
-            "0902",
-            "0994",
-            "0909",
-            "0996",
-            "0997",
-            "0908",
-            "0998",
-            "0903",
-            "0999",
-            "0901",
-            "0906",
-            "0993",
-            "0992",
-            "8863",
-            "8862",
-            "88649",
-            "8865",
-            "8864",
-            "8866",
-            "88689",
-            "8868",
-            "8867",
-            "00852",
-            "00853",
-        ]
-        rand_prefix: str = random.choice(prefix)
-        return f"{rand_prefix}-{random.choice(string.digits[1:])}{''.join(random.choices(string.digits,k=7))}"
+        from ..data._data import landline_number_prefix
 
-    def latitude(self) -> float:
+        rand_prefix: str = random.choice(landline_number_prefix)
+        return f"{rand_prefix}-{random.choice(string.digits[1:])}{''.join(random.choices(string.digits, k=7))}"
+
+    def latitude(self) -> str:
         """纬度 N（北） 表示北半球。S（南） 表示南半球。"""
-        return f"{round(random.uniform(-90, 90), 6)}°{random.choice(['N','S'])}"
+        return f"{round(random.uniform(-90, 90), 6)}°{random.choice(['N', 'S'])}"
 
-    def longitude(self) -> float:
+    def longitude(self) -> str:
         """经度 E（东） 表示东半球。W（西） 表示西半球。"""
-        return f"{round(random.uniform(-180, 180), 6)}°{random.choice(['E','W'])}"
+        return f"{round(random.uniform(-180, 180), 6)}°{random.choice(['E', 'W'])}"
 
     def occupation(self) -> str:
         """职业"""
-        return random.choice(
-            [
-                "教师",
-                "工人",
-                "记者",
-                "演员",
-                "作曲家",
-                "架构师",
-                "营养师",
-                "鼓手",
-                "厨师",
-                "医生",
-                "护士",
-                "司机",
-                "军人",
-                "律师",
-                "商人",
-                "会计",
-                "店员",
-                "出纳员",
-                "作家",
-                "导游",
-                "警察",
-                "歌手",
-                "画家",
-                "裁缝",
-                "翻译官",
-                "法官",
-                "保安",
-                "花匠",
-                "服务员",
-                "清洁工",
-                "建筑师",
-                "理发师",
-                "采购员",
-                "消防员",
-                "机修工",
-                "推销员",
-                "魔术师",
-                "模特",
-                "邮递员",
-                "售货员",
-                "救生员",
-                "运动员",
-                "工程师",
-                "飞行员",
-                "管理员",
-                "机械师",
-                "经纪人",
-                "歌唱家",
-                "审计员",
-                "漫画家",
-                "园艺师",
-                "科学家",
-                "主持人",
-                "调酒师",
-                "化妆师",
-                "艺术家",
-                "糕点师",
-                "甜品师",
-                "外交官",
-                "舞蹈家",
-                "箭术",
-                "溜冰",
-                "弹钢琴",
-                "古筝手",
-                "钢琴家",
-                "设计师",
-                "CEO",
-                "机 长",
-                "记者",
-                "赛车手",
-                "教练",
-                "兽医",
-                "特警",
-                "按摩",
-            ]
-        )
+        from ..data._data import occupation
+
+        return random.choice(occupation)
 
     def school(self) -> str:
         """学校名称"""
-        return random.choice(
-            [
-                "麻省理工学院",
-                "牛津大学",
-                "斯坦福大学",
-                "剑桥大学",
-                "哈佛大学",
-                "加州理工学院",
-                "帝国理工学院",
-                "苏黎世联邦理工大学",
-                "伦敦大学学院",
-                "芝加哥大学",
-            ]
-        )
+        from ..data._data import education_keywords, regions
+
+        suffixes = ["中学", "学校", "分校", "大学", "学院"]
+        prefix = random.choice(regions)
+        keyword = random.choice(education_keywords)
+        suffix = random.choice(suffixes)
+        return f"{prefix}{keyword}{suffix}"
 
     def full_name(self) -> str:
         """姓名"""
@@ -975,13 +556,13 @@ class Person:
 
     def residence(self) -> str:
         """小区、住宅"""
-        from .data._housing import housing
+        from ..data._housing import housing
 
         return random.choice(housing)
 
     def country(self, en: bool = False) -> str:
         """国家名"""
-        from .data._country import en_country, zh_country
+        from ..data._country import en_country, zh_country
 
         if en:
             return random.choice(en_country)
@@ -1047,7 +628,7 @@ class Person:
                 f"{province_letter}{letter_part}{symbol}{battery_symbol}{license_plate}"
             )
 
-        return f"{province_letter}{letter_part}{symbol}{license_plate }"
+        return f"{province_letter}{letter_part}{symbol}{license_plate}"
 
     def email(self, prefix=None):
         """邮箱"""

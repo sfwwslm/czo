@@ -3,11 +3,11 @@ import shutil
 import sys
 from pathlib import Path
 
-from .utils import add_help
+from . import add_help
 
 
 @add_help
-class PathUtils:
+class Paths:
     """
     处理文件相关的功能
     """
@@ -55,7 +55,7 @@ class PathUtils:
         keys = []
 
         if len(keywords) < 1:
-            raise KeyError(f"要查找的目录名称不能是空！")
+            raise KeyError("要查找的目录名称不能是空！")
 
         if isinstance(keywords, str):
             keys.append(keywords)

@@ -1,11 +1,11 @@
 import ipaddress
 from typing import Any, Generator, Union
 
-from .utils import add_help
+from . import add_help
 
 
 @add_help
-class NetworkUtils:
+class Net:
     @staticmethod
     def help() -> None: ...
 

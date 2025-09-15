@@ -2,17 +2,20 @@ import datetime
 import random
 import time
 import warnings
-from typing import Literal, Optional, Union, overload
+from typing import Optional, TypeAlias, Union
 
-from .utils import add_help
+from . import add_help
+
+dt: TypeAlias = datetime.datetime
 
 
 @add_help
-class DateLib:
+class DateTime:
     """
     提供了一组静态方法，用于处理日期和时间的常见操作。
     """
 
+    @staticmethod
     def help() -> None: ...
 
     @staticmethod
@@ -20,17 +23,17 @@ class DateLib:
         """
         返回当前时间的时间戳。
         """
-        return int(time.time())
+        return int(datetime.datetime.timestamp(datetime.datetime.now()))
 
     @staticmethod
     def timestamp_ms() -> int:
         """
         返回当前时间的时间戳。
         """
-        return int(round(time.time() * 1000))
+        return int(datetime.datetime.timestamp(datetime.datetime.now()) * 1000)
 
     @staticmethod
-    def now_date() -> str:
+    def current_datetime() -> dt:
         """
         返回当前日期和时间的格式化字符串。
 
@@ -41,10 +44,15 @@ class DateLib:
             >>> now_date()
             '2022-01-01 12:00:00'
         """
-        return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return datetime.datetime.now()
 
     @staticmethod
-    def now_ymd() -> list:
+    def current_date() -> datetime.date:
+        """返回当前日期。"""
+        return datetime.date.today()
+
+    @staticmethod
+    def current_ymd() -> list[str]:
         """
         返回当前日期的年、月、日。
 
@@ -55,7 +63,7 @@ class DateLib:
             >>> now_ymd()
             ['2022', '01', '01']
         """
-        now_date = datetime.datetime.now()
+        now_date: dt = datetime.datetime.now()
         y = str(now_date.year)
         m = str(now_date.month)
         d = str(now_date.day)
@@ -104,12 +112,10 @@ class DateLib:
             >>> date_to_timestamp("2022-01-01 12:00:00", ms=True)
             1641009600000
         """
+        dt_obj = datetime.datetime.fromisoformat(date).astimezone()
         if ms:
-            return (
-                int(datetime.datetime.fromisoformat(date).astimezone().timestamp())
-                * 1000
-            )
-        return int(datetime.datetime.fromisoformat(date).astimezone().timestamp())
+            return int(dt_obj.timestamp() * 1000)
+        return int(dt_obj.timestamp())
 
     @staticmethod
     def yesterday_zero_point_timestamp(day=1, ms=False) -> int:
@@ -151,11 +157,11 @@ class DateLib:
             >>> difference_time_two("2022-01-01 10:00:00", "2022-01-01 12:00:00")
             7200.0
         """
-        date1 = datetime.datetime.strptime(date1.strip(), "%Y-%m-%d %H:%M:%S")
-        date2 = datetime.datetime.strptime(date2.strip(), "%Y-%m-%d %H:%M:%S")
+        d1: dt = datetime.datetime.strptime(date1.strip(), "%Y-%m-%d %H:%M:%S")
+        d2: dt = datetime.datetime.strptime(date2.strip(), "%Y-%m-%d %H:%M:%S")
         if reversal:
-            date1, date2 = date2, date1
-        return (date2 - date1).total_seconds()
+            d1, d2 = d2, d1
+        return (d2 - d1).total_seconds()
 
     @staticmethod
     def date_before_minutes(value) -> str:
@@ -293,8 +299,8 @@ class DateLib:
 
     @staticmethod
     def generate_random_date_and_timestamp(
-        start: datetime.datetime | str, end: datetime.datetime | str
-    ) -> tuple[datetime.datetime, int]:
+        start: dt | str, end: dt | str
+    ) -> tuple[dt, int]:
         """
         生成指定范围内的随机日期和时间戳。
 
@@ -318,6 +324,13 @@ class DateLib:
         if isinstance(start, str) and isinstance(end, str):
             start = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
             end = datetime.datetime.strptime(end, "%Y-%m-%d %H:%M:%S")
+
+        if not isinstance(start, datetime.datetime) or not isinstance(
+            end, datetime.datetime
+        ):
+            raise ValueError(
+                "参数 start 和 end 必须为 datetime.datetime 对象或字符串。"
+            )
 
         if start > end:
             warnings.warn(
@@ -358,6 +371,7 @@ class DateLib:
             >>> print(DateLib.get_dates_offset_by_days(-7, "2024-12-20 00:02:00"))
             ('2024-12-13 00:02:00', '2024-12-20 00:02:00')
         """
+        # TODO test
         if isinstance(now, str):
             today = datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S")
         elif isinstance(now, datetime.datetime):
@@ -374,171 +388,12 @@ class DateLib:
         today = today.strftime(fmt)
         return (past, today)
 
-    @overload
-    @staticmethod
-    def calculate_past_time(
-        format: str = "%Y-%m-%d %H:%M:%S",
-        *,
-        reset_datetime: str | datetime.datetime = None,
-        ret_datetime: Literal[False] = False,
-        ret_timestamp: Literal[False] = False,
-        ret_timestamp_ms: Literal[False] = False,
-        year_ago: int | None = None,
-        month_ago: int | None = None,
-        day_ago: int | None = None,
-        hour_ago: int | None = None,
-        minute_ago: int | None = None,
-        second_ago: int | None = None,
-        microsecond_ago: int | None = None,
-    ) -> tuple[str, str]: ...
-    @overload
-    @staticmethod
-    def calculate_past_time(
-        format: str = "%Y-%m-%d %H:%M:%S",
-        *,
-        reset_datetime: str | datetime.datetime = None,
-        ret_datetime: Literal[True] = True,
-        ret_timestamp: Literal[False] = False,
-        ret_timestamp_ms: Literal[False] = False,
-        year_ago: int | None = None,
-        month_ago: int | None = None,
-        day_ago: int | None = None,
-        hour_ago: int | None = None,
-        minute_ago: int | None = None,
-        second_ago: int | None = None,
-        microsecond_ago: int | None = None,
-    ) -> tuple[datetime.datetime, datetime.datetime]: ...
-
-    @overload
-    @staticmethod
-    def calculate_past_time(
-        format: str = "%Y-%m-%d %H:%M:%S",
-        *,
-        reset_datetime: str | datetime.datetime = None,
-        ret_datetime: Literal[False] = False,
-        ret_timestamp: Literal[True] = True,
-        ret_timestamp_ms: Literal[False] = False,
-        year_ago: int | None = None,
-        month_ago: int | None = None,
-        day_ago: int | None = None,
-        hour_ago: int | None = None,
-        minute_ago: int | None = None,
-        second_ago: int | None = None,
-        microsecond_ago: int | None = None,
-    ) -> tuple[int, int]: ...
-
-    @overload
-    @staticmethod
-    def calculate_past_time(
-        format: str = "%Y-%m-%d %H:%M:%S",
-        *,
-        reset_datetime: str | datetime.datetime = None,
-        ret_datetime: Literal[False] = False,
-        ret_timestamp: Literal[False] = False,
-        ret_timestamp_ms: Literal[True] = True,
-        year_ago: int | None = None,
-        month_ago: int | None = None,
-        day_ago: int | None = None,
-        hour_ago: int | None = None,
-        minute_ago: int | None = None,
-        second_ago: int | None = None,
-        microsecond_ago: int | None = None,
-    ) -> tuple[int, int]: ...
-
-    @staticmethod
-    def calculate_past_time(
-        format: str = "%Y-%m-%d %H:%M:%S",
-        *,
-        reset_datetime: str | datetime.datetime = None,
-        ret_datetime: bool = False,
-        ret_timestamp: bool = False,
-        ret_timestamp_ms: bool = False,
-        year_ago: int | None = None,
-        month_ago: int | None = None,
-        day_ago: int | None = None,
-        hour_ago: int | None = None,
-        minute_ago: int | None = None,
-        second_ago: int | None = None,
-        microsecond_ago: int | None = None,
-    ) -> (
-        tuple[datetime.datetime, datetime.datetime] | tuple[int, int] | tuple[str, str]
-    ):
-        """计算过去某个时间点，基于当前时间减去指定的时间间隔。
-
-        TODO 在计算时间方面还有些细节待完善。
-
-        Args:
-            format (str): 日期时间格式字符串，默认为 "%Y-%m-%d %H:%M:%S"。
-            reset_datetime (str|datetime.datetime): reset_datetime (str | datetime.datetime, 可选): 计算的起始时间，可以是字符串（格式为 "%Y-%m-%d %H:%M:%S"）或 `datetime` 对象。如果为 `None`，则使用当前时间。
-            ret_datetime (bool): 如果为 True，返回 `datetime` 对象。
-            ret_timestamp (bool): 如果为 True，返回时间戳（秒）。
-            ret_timestamp_ms (bool): 如果为 True，返回时间戳（毫秒）。
-            year_ago (int, 可选): 要回退的年数。
-            month_ago (int, 可选): 要回退的月数。
-            day_ago (int, 可选): 要回退的天数。
-            hour_ago (int, 可选): 要回退的小时数。
-            minute_ago (int, 可选): 要回退的分钟数。
-            second_ago (int, 可选): 要回退的秒数。
-            microsecond_ago (int, 可选): 要回退的微秒数。
-
-        Returns:
-            - 如果 `ret_datetime` 为 True，返回 (`datetime.datetime`, `datetime.datetime`)。
-            - 如果 `ret_timestamp` 为 True，返回 (`int`, `int`)。
-            - 如果 `ret_timestamp_ms` 为 True，返回 (`int`, `int`)。
-            - 否则，返回格式化后的字符串 (`str`, `str`)。
-
-        Raises:
-            ValueError: 当 `ret_datetime`, `ret_timestamp`, `ret_timestamp_ms` 中有多个为 True 时抛出。
-        """
-
-        if sum([ret_datetime, ret_timestamp, ret_timestamp_ms]) > 1:
-            raise ValueError(
-                "只能有其中一个参数为 True: 'ret_datetime', 'ret_timestamp', or 'ret_timestamp_ms'."
-            )
-
-        if isinstance(reset_datetime, str):
-            now: datetime.datetime = datetime.datetime.strptime(
-                reset_datetime, "%Y-%m-%d %H:%M:%S"
-            )
-        elif isinstance(reset_datetime, datetime.datetime):
-            now = reset_datetime
-        else:
-            now = datetime.datetime.now()
-
-        re = {}
-        if year_ago:
-            re["year"] = year_ago
-        if month_ago:
-            re["month"] = month_ago
-        if day_ago:
-            re["day"] = day_ago
-        if hour_ago:
-            re["hour"] = hour_ago
-        if minute_ago:
-            re["minute"] = minute_ago
-        if second_ago:
-            re["second"] = second_ago
-        if microsecond_ago:
-            re["microsecond"] = microsecond_ago
-
-        ago = now.replace(**re)
-
-        ago = now - (now - ago)
-
-        if ret_datetime:
-            return ago, now
-        elif ret_timestamp:
-            return round(ago.timestamp()), round(now.timestamp())
-        elif ret_timestamp_ms:
-            return round(ago.timestamp() * 1000), round(now.timestamp() * 1000)
-        else:
-            return ago.strftime(format), now.strftime(format)
-
 
 @add_help
 class Timer:
     """计时器"""
 
+    @staticmethod
     def help(): ...
 
     def __init__(self) -> None:
