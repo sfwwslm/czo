@@ -1,47 +1,47 @@
 from czo import (
-    DateTimeUtils,
-    PathUtils,
-    NetworkUtils,
-    FakeDataUtils,
-    RandomUtils,
+    DateTime,
+    Faker,
+    Net,
+    Paths,
+    Rand,
 )
 
 
-def test_RandomUtils(capsys):
-    RandomUtils.help()
+def test_Rand(capsys):
+    Rand.help()
 
     captured = capsys.readouterr()
 
-    assert "RandomUtils" in captured.out and "help" in captured.out
+    assert "Rand" in captured.out and "help" in captured.out
 
 
-def test_FakeDataUtils(capsys):
-    FakeDataUtils.help()
-
-    captured = capsys.readouterr()
-
-    assert "FakeDataUtils" in captured.out and "help" in captured.out
-
-
-def test_NetworkUtils(capsys):
-    NetworkUtils.help()
+def test_Faker(capsys):
+    Faker.help()
 
     captured = capsys.readouterr()
 
-    assert "NetworkUtils" in captured.out and "help" in captured.out
+    assert "Faker" in captured.out and "help" in captured.out
 
 
-def test_PathUtils(capsys):
-    PathUtils.help()
-
-    captured = capsys.readouterr()
-
-    assert "PathUtils" in captured.out and "help" in captured.out
-
-
-def test_DateTimeUtils(capsys):
-    DateTimeUtils.help()
+def test_Net(capsys):
+    Net.help()
 
     captured = capsys.readouterr()
 
-    assert "DateTimeUtils" in captured.out and "help" in captured.out
+    assert "Net" in captured.out and "help" in captured.out
+
+
+def test_Paths(capsys):
+    Paths.help()
+
+    captured = capsys.readouterr()
+
+    assert "Paths" in captured.out and "help" in captured.out
+
+
+def test_DateTime(capsys):
+    DateTime.help()
+
+    captured = capsys.readouterr()
+
+    assert "DateTime" in captured.out and "help" in captured.out
