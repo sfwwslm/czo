@@ -179,13 +179,5 @@ class Rand:
 
     @staticmethod
     def random_mac() -> str:
-        """
-        生成一个随机的MAC。
-        """
-        mac_address: str = ":".join(
-            [
-                "{:02x}".format((uuid.getnode() >> elements) & 0xFF)
-                for elements in range(0, 2 * 6, 2)
-            ]
-        )
-        return mac_address
+        """生成随机 MAC 地址"""
+        return ":".join(f"{random.randint(0, 255):02x}" for _ in range(6))
