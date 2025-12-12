@@ -181,3 +181,26 @@ class Rand:
     def random_mac() -> str:
         """生成随机 MAC 地址"""
         return ":".join(f"{random.randint(0, 255):02x}" for _ in range(6))
+
+    @staticmethod
+    def random_email(domain: str | None = None, *, length: int = 8) -> str:
+        """生成随机邮箱"""
+        domains = [
+            "example.com",
+            "test.local",
+            "mail.test",
+            "demo.dev",
+            "sample.org",
+        ]
+        prefix = Rand.random_str(length).lower()
+        selected_domain = domain if domain else random.choice(domains)
+        return f"{prefix}@{selected_domain}"
+
+    @staticmethod
+    def random_url(domain: str | None = None, *, https: bool = True) -> str:
+        """生成随机 URL，便于构造 HTTP 相关测试数据"""
+        domains = ["example.com", "localhost", "demo.dev", "service.test"]
+        chosen_domain = domain or random.choice(domains)
+        scheme = "https" if https else "http"
+        path = "/".join([Rand.random_str(6).lower(), Rand.random_str(8).lower()])
+        return f"{scheme}://{chosen_domain}/{path}"

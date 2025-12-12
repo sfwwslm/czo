@@ -388,6 +388,34 @@ class DateTime:
         today = today.strftime(fmt)
         return (past, today)
 
+    @staticmethod
+    def parse_iso8601(date_str: str, tz: datetime.timezone | None = None) -> dt:
+        """解析 ISO8601 字符串，支持末尾 Z 的 UTC 表示"""
+        normalized = date_str.replace("Z", "+00:00") if date_str.endswith("Z") else date_str
+        parsed = datetime.datetime.fromisoformat(normalized)
+        if tz:
+            return parsed.astimezone(tz)
+        return parsed
+
+    @staticmethod
+    def to_timezone(date: dt | str, offset_hours: int) -> dt:
+        """将时间转换到指定时区偏移（小时）"""
+        target_tz = datetime.timezone(datetime.timedelta(hours=offset_hours))
+        if isinstance(date, str):
+            date = DateTime.parse_iso8601(date)
+        if date.tzinfo is None:
+            date = date.replace(tzinfo=datetime.timezone.utc)
+        return date.astimezone(target_tz)
+
+    @staticmethod
+    def is_workday(date: dt | datetime.date | str) -> bool:
+        """判断是否为工作日（周一到周五）"""
+        if isinstance(date, str):
+            date = DateTime.parse_iso8601(date).date()
+        if isinstance(date, datetime.datetime):
+            date = date.date()
+        return date.weekday() < 5
+
 
 @add_help
 class Timer:

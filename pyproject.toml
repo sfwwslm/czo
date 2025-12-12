@@ -6,7 +6,7 @@ build-backend = "uv_build"
 
 [project]
 name = "czo"
-version = "0.3.1"
+version = "0.3.2"
 authors = [
     { name = "sfwwslm", email = "sfwwslm@gmail.com" },
 ]

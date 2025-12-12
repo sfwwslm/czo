@@ -10,9 +10,7 @@ class Net:
     def help() -> None: ...
 
     @staticmethod
-    def parse_cidr(
-        address: str, netmask_or_prefix: int | str
-    ) -> dict[str, Any] | ValueError:
+    def parse_cidr(address: str, netmask_or_prefix: int | str) -> dict[str, Any]:
         """
         根据指定的网络和前缀长度计算CIDR信息。
 
@@ -22,7 +20,7 @@ class Net:
 
         Returns:
         - 字典，包含CIDR信息，包括主机数量、地址范围、网络地址、广播地址和子网掩码。
-        - 如果参数无效，返回ValueError异常。
+        - 参数无效会抛出 ValueError。
 
         Examples:
         >>> print(NetworkUtils.parse_cidr('192.168.1.0', 24))
@@ -30,35 +28,32 @@ class Net:
         >>> print(NetworkUtils.parse_cidr('240e::0', 64))
         """
 
+        v4 = ipaddress.IPv4Network
+        v6 = ipaddress.IPv6Network
         try:
-            v4 = ipaddress.IPv4Network
-            v6 = ipaddress.IPv6Network
             if ":" in address:
                 cidr = v6(f"{address}/{netmask_or_prefix}")
             else:
                 cidr = v4(f"{address}/{netmask_or_prefix}")
+        except ValueError as exc:
+            raise ValueError(f"Invalid CIDR input: {address}/{netmask_or_prefix}") from exc
 
-            # 输出网络地址、子网掩码、广播地址等信息
-            host_count = cidr.num_addresses - 2
-            range = (
-                str(cidr.network_address + 1) + "-" + str(cidr.broadcast_address - 1)
-            )
-            network_address = str(cidr.network_address)
-            broadcast_address = str(cidr.broadcast_address)
-            netmask = str(cidr.netmask)
-            prefixlen = cidr.prefixlen
+        # 输出网络地址、子网掩码、广播地址等信息
+        host_count = cidr.num_addresses - 2
+        range = str(cidr.network_address + 1) + "-" + str(cidr.broadcast_address - 1)
+        network_address = str(cidr.network_address)
+        broadcast_address = str(cidr.broadcast_address)
+        netmask = str(cidr.netmask)
+        prefixlen = cidr.prefixlen
 
-            return {
-                "host_count": host_count,
-                "range": range,
-                "network_address": network_address,
-                "broadcast_address": broadcast_address,
-                "prefixlen": prefixlen,
-                "netmask": netmask,
-            }
-
-        except ValueError as e:
-            return e
+        return {
+            "host_count": host_count,
+            "range": range,
+            "network_address": network_address,
+            "broadcast_address": broadcast_address,
+            "prefixlen": prefixlen,
+            "netmask": netmask,
+        }
 
     @staticmethod
     def ipaddress_generator(
