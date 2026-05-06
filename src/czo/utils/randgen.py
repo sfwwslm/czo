@@ -204,3 +204,35 @@ class Rand:
         scheme = "https" if https else "http"
         path = "/".join([Rand.random_str(6).lower(), Rand.random_str(8).lower()])
         return f"{scheme}://{chosen_domain}/{path}"
+
+    @staticmethod
+    def random_hostname(
+        prefix="host", length=6, use_numbers=True, use_letters=True
+    ) -> str:
+        """
+        生成随机主机名
+
+        Args:
+            prefix (str): 主机名前缀
+            length (int): 随机部分长度
+            use_numbers (bool): 是否包含数字
+            use_letters (bool): 是否包含字母
+
+        Returns:
+            str: 随机主机名
+        """
+
+        charset = ""
+
+        if use_letters:
+            charset += string.ascii_lowercase
+
+        if use_numbers:
+            charset += string.digits
+
+        if not charset:
+            raise ValueError("至少启用字母或数字之一")
+
+        random_part = "".join(random.choices(charset, k=length))
+
+        return f"{prefix}-{random_part}"
